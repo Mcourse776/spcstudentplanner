@@ -292,7 +292,7 @@
         </button>
         <div class="brand">Teacher Chat</div>
       </div>
-      <a class="logout-btn" href="index.html">Log Out</a>
+      <a class="logout-btn" href="index.html" id="chatLogoutBtn">Log Out</a>
     </header>
 
     <main class="content">
@@ -322,6 +322,14 @@
     const teacherSidebar = document.getElementById('teacherSidebar');
     const teacherBurgerBtn = document.getElementById('teacherBurgerBtn');
     const teacherBackBtn = document.getElementById('teacherBackBtn');
+    const chatLogoutBtn = document.getElementById('chatLogoutBtn');
+
+    if (chatLogoutBtn) {
+      chatLogoutBtn.addEventListener('click', (event) => {
+        event.preventDefault();
+        window.location.href = 'index.html';
+      });
+    }
 
     function getClasses() {
       try {

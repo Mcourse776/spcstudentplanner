@@ -111,16 +111,6 @@
       margin-bottom: 20px;
     }
 
-    .create-class-trigger {
-      background: #0b7948;
-      color: #fff;
-      border: none;
-      border-radius: 999px;
-      padding: 10px 18px;
-      font-weight: 700;
-      cursor: pointer;
-    }
-
     .form-grid {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
@@ -162,6 +152,18 @@
       font-weight: bold;
       cursor: pointer;
       margin-top: 8px;
+    }
+
+    .create-class-trigger {
+      background: #0b7948;
+      color: #fff;
+      border: none;
+      border-radius: 999px;
+      padding: 10px 18px;
+      font-size: 0.95rem;
+      font-weight: 700;
+      cursor: pointer;
+      box-shadow: 0 8px 18px rgba(11, 121, 72, 0.18);
     }
 
     .modal-backdrop {
@@ -429,7 +431,7 @@
         </button>
         <div class="brand">Teacher Dashboard</div>
       </div>
-      <a class="logout-btn" href="index.html">Log Out</a>
+      <a class="logout-btn" href="index.html" id="teacherLogoutBtn">Log Out</a>
     </header>
 
     <main class="content">
@@ -499,10 +501,18 @@
     const teacherSidebar = document.getElementById('teacherSidebar');
     const teacherBurgerBtn = document.getElementById('teacherBurgerBtn');
     const teacherBackBtn = document.getElementById('teacherBackBtn');
+    const teacherLogoutBtn = document.getElementById('teacherLogoutBtn');
     const createClassModal = document.getElementById('createClassModal');
     const openCreateModalBtn = document.getElementById('openCreateModalBtn');
     const cancelCreateModalBtn = document.getElementById('cancelCreateModalBtn');
     const STORAGE_KEY = 'teacher_classes';
+
+    if (teacherLogoutBtn) {
+      teacherLogoutBtn.addEventListener('click', (event) => {
+        event.preventDefault();
+        window.location.href = 'index.html';
+      });
+    }
 
     function generateCode() {
       const letters = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';

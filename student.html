@@ -211,29 +211,6 @@
       gap: 12px;
     }
 
-    .mini-icon {
-      width: 18px;
-      height: 18px;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 1.1rem;
-      color: #fff;
-    }
-
-    .avatar-badge {
-      width: 30px;
-      height: 30px;
-      border-radius: 50%;
-      background: linear-gradient(180deg, #f4a743 0%, #ec8d13 100%);
-      color: #fff;
-      font-weight: 700;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 0.85rem;
-    }
-
     .logout-btn {
       background: #fff;
       color: #0b7948;
@@ -265,7 +242,7 @@
 
     .page-header h1 {
       font-size: clamp(2rem, 3vw, 2.6rem);
-      color: #111827;
+      color: #212329;
       font-weight: 500;
     }
 
@@ -285,10 +262,10 @@
     .empty-card {
       max-width: 980px;
       margin: 0 auto;
-      background: rgba(255,255,255,0.45);
-      border: 1px solid #dfe6ea;
+      background: rgba(255, 255, 255, 0.35);
+      border: 1px solid rgba(32, 33, 36, 0.04);
       border-radius: 18px;
-      min-height: 540px;
+      min-height: 580px;
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -297,116 +274,118 @@
       padding: 24px;
     }
 
-    .illus {
-      width: 240px;
-      height: 180px;
+    .empty-illustration {
+      width: 260px;
+      height: 210px;
       position: relative;
-      margin-bottom: 18px;
+      margin-bottom: 24px;
     }
 
-    .illus .frame {
+    .illustration-window {
       position: absolute;
-      left: 58px;
+      left: 64px;
       top: 18px;
-      width: 120px;
+      width: 128px;
       height: 120px;
-      border: 4px solid #4c5764;
-      border-radius: 3px;
+      border: 4px solid #424242;
       background: rgba(255,255,255,0.2);
+      border-radius: 8px;
     }
 
-    .illus .frame:before,
-    .illus .frame:after {
+    .illustration-window:before,
+    .illustration-window:after {
       content: "";
       position: absolute;
-      background: #4c5764;
+      background: #424242;
     }
 
-    .illus .frame:before {
+    .illustration-window:before {
       width: 4px;
       height: 100%;
       left: 50%;
       transform: translateX(-50%);
     }
 
-    .illus .frame:after {
-      height: 4px;
+    .illustration-window:after {
       width: 100%;
+      height: 4px;
       top: 50%;
       transform: translateY(-50%);
     }
 
-    .illus .book {
+    .illustration-book {
       position: absolute;
-      left: 56px;
-      bottom: 18px;
-      width: 160px;
-      height: 52px;
-      background: linear-gradient(135deg, #1a73e8 0%, #1f5cc7 100%);
-      border-radius: 8px 8px 10px 10px;
+      left: 46px;
+      bottom: 28px;
+      width: 150px;
+      height: 48px;
+      background: linear-gradient(135deg, #1a73e8 0%, #1558c7 100%);
+      border-radius: 10px;
       transform: rotate(-18deg);
-      box-shadow: 0 8px 12px rgba(26, 115, 232, 0.25);
+      box-shadow: 0 10px 18px rgba(26, 115, 232, 0.2);
     }
 
-    .illus .book:before {
+    .illustration-book:before {
       content: "";
       position: absolute;
-      right: 12px;
-      top: 0;
-      width: 26px;
-      height: 100%;
+      right: -14px;
+      top: 4px;
+      width: 20px;
+      height: 38px;
       background: rgba(255,255,255,0.18);
       border-radius: 8px;
+      transform: skewY(-12deg);
     }
 
-    .illus .mug {
+    .illustration-cup {
       position: absolute;
-      right: 22px;
-      bottom: 26px;
-      width: 56px;
-      height: 52px;
+      right: 24px;
+      bottom: 18px;
+      width: 74px;
+      height: 54px;
       background: #f4d35e;
-      border-radius: 10px 10px 14px 14px;
-      border: 3px solid #4c5764;
+      border-radius: 10px 10px 16px 16px;
+      border: 3px solid #4b5563;
       border-top: 0;
     }
 
-    .illus .mug:before {
+    .illustration-cup:before {
       content: "";
       position: absolute;
-      left: -12px;
+      left: -10px;
       top: 8px;
-      width: 14px;
+      width: 12px;
       height: 22px;
-      border: 3px solid #4c5764;
+      border: 3px solid #4b5563;
       border-left: none;
-      border-radius: 0 14px 14px 0;
+      border-radius: 0 12px 12px 0;
     }
 
-    .illus .mug:after {
+    .illustration-cup:after {
       content: "";
       position: absolute;
       left: 10px;
-      top: -8px;
-      width: 30px;
-      height: 10px;
+      top: -11px;
+      width: 38px;
+      height: 12px;
       background: #f4d35e;
-      border: 3px solid #4c5764;
+      border: 3px solid #4b5563;
       border-bottom: none;
-      border-radius: 10px 10px 0 0;
+      border-radius: 12px 12px 0 0;
     }
 
     .empty-card p {
-      font-size: 1.08rem;
+      font-size: 1.1rem;
       color: #1f2937;
       margin-bottom: 22px;
       font-weight: 500;
     }
 
-    .cta-row {
+    .empty-card-actions {
       display: flex;
-      gap: 16px;
+      gap: 18px;
       justify-content: center;
+      align-items: center;
       flex-wrap: wrap;
     }
 
@@ -425,7 +404,7 @@
     }
 
     .secondary-btn {
-      background: transparent;
+      background: #f3f6f7;
       color: #1f2937;
     }
 
@@ -444,8 +423,6 @@
       padding: 24px;
       display: none;
     }
-
-    .join-box.visible { display: block; }
 
     .join-box h2 {
       font-size: 1.2rem;
@@ -475,38 +452,6 @@
       padding: 12px 18px;
       font-weight: bold;
       cursor: pointer;
-    }
-
-    .mini-form {
-      display: none;
-      margin-top: 18px;
-      background: #f9fafb;
-      border: 1px solid #e5e7eb;
-      border-radius: 18px;
-      padding: 18px;
-      gap: 14px;
-      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
-    }
-
-    .mini-form.open { display: grid; }
-
-    .mini-field {
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
-    }
-
-    .mini-field label {
-      font-size: 0.8rem;
-      color: #374151;
-      font-weight: 700;
-    }
-
-    .mini-field input {
-      padding: 10px 12px;
-      border-radius: 10px;
-      border: 1px solid #d1d5db;
-      font-size: 0.95rem;
     }
 
     .toast {
@@ -746,14 +691,6 @@
       cursor: pointer;
     }
 
-    .empty-state {
-      background: #fff;
-      border-radius: 16px;
-      padding: 16px;
-      color: #6b7280;
-      border: 1px dashed #d1d5db;
-    }
-
     @media (max-width: 760px) {
       .sidebar {
         width: 260px;
@@ -761,10 +698,6 @@
 
       .page {
         padding: 0 18px 30px;
-      }
-
-      .empty-card {
-        min-height: 420px;
       }
     }
 
@@ -775,16 +708,6 @@
 
       .topbar-title {
         font-size: 1.1rem;
-      }
-
-      .cta-row {
-        flex-direction: column;
-        width: 100%;
-      }
-
-      .secondary-btn,
-      .primary-btn {
-        width: 100%;
       }
     }
   </style>
@@ -806,7 +729,7 @@
       </div>
 
       <div class="sidebar-menu">
-        <a class="sidebar-link active" href="#"><span class="nav-icon">⌂</span>Home</a>
+        <a class="sidebar-link active" href="#" id="homeNav"><span class="nav-icon">⌂</span>Home</a>
         <a class="sidebar-link" href="calendar.html"><span class="nav-icon">🗓</span>Calendar</a>
         <a class="sidebar-link" href="#"><span class="nav-icon">⇪</span>My classes</a>
         <a class="sidebar-link" href="#"><span class="nav-icon">⚙</span>Settings</a>
@@ -821,7 +744,7 @@
           </button>
         </div>
         <div class="topbar-actions">
-          <a class="logout-btn" href="index.html">Log Out</a>
+          <a class="logout-btn" href="index.html" id="studentLogoutBtn">Log Out</a>
         </div>
       </header>
 
@@ -831,15 +754,13 @@
         </div>
 
         <div class="empty-card" id="emptyCard">
-          <div class="illus" aria-hidden="true">
-            <div class="frame"></div>
-            <div class="book"></div>
-            <div class="mug"></div>
+          <div class="empty-illustration" aria-hidden="true">
+            <div class="illustration-window"></div>
+            <div class="illustration-book"></div>
+            <div class="illustration-cup"></div>
           </div>
           <p>Add a class to get started</p>
-          <div class="cta-row">
-            <button class="primary-btn" id="joinNowBtn" type="button">Join class</button>
-          </div>
+          <button class="primary-btn" type="button" id="joinClassBtn" style="margin-top: 8px;">Join class</button>
         </div>
 
         <section class="join-box" id="joinBox">
@@ -848,26 +769,6 @@
             <input type="text" id="joinCode" placeholder="Enter class code" maxlength="8" required>
             <button type="submit">Join</button>
           </form>
-
-          <div class="mini-form" id="miniForm">
-            <div class="mini-field">
-              <label for="sectionInput">Section</label>
-              <input type="text" id="sectionInput" placeholder="Section A">
-            </div>
-            <div class="mini-field">
-              <label for="dayInput">Day</label>
-              <input type="text" id="dayInput" placeholder="Monday">
-            </div>
-            <div class="mini-field">
-              <label for="startTimeInput">Time Started</label>
-              <input type="text" id="startTimeInput" placeholder="8:30 AM">
-            </div>
-            <div class="mini-field">
-              <label for="endTimeInput">Time Ended</label>
-              <input type="text" id="endTimeInput" placeholder="9:45 AM">
-            </div>
-          </div>
-
           <div class="toast" id="joinMessage"></div>
         </section>
 
@@ -910,13 +811,14 @@
     const sidebar = document.getElementById('sidebar');
     const burgerBtn = document.getElementById('burgerBtn');
     const backBtn = document.getElementById('backBtn');
+    const homeNav = document.getElementById('homeNav');
+    const studentLogoutBtn = document.getElementById('studentLogoutBtn');
+    const addClassTrigger = document.getElementById('addClassTrigger');
+    const joinClassBtn = document.getElementById('joinClassBtn');
+    const emptyCard = document.getElementById('emptyCard');
     const joinBox = document.getElementById('joinBox');
     const joinForm = document.getElementById('joinForm');
     const joinMessage = document.getElementById('joinMessage');
-    const emptyCard = document.getElementById('emptyCard');
-    const addClassBtn = document.getElementById('addClassBtn');
-    const joinNowBtn = document.getElementById('joinNowBtn');
-    const miniForm = document.getElementById('miniForm');
     const classListSection = document.getElementById('classListSection');
     const classModal = document.getElementById('classModal');
     const classModalTitle = document.getElementById('classModalTitle');
@@ -969,12 +871,13 @@
 
       if (!classes.length) {
         emptyCard.style.display = 'flex';
-        joinBox.classList.remove('visible');
+        joinBox.style.display = 'none';
         classListSection.innerHTML = '';
         return;
       }
 
       emptyCard.style.display = 'none';
+      joinBox.style.display = 'block';
       classListSection.innerHTML = classes.map(item => `
         <div class="class-card" data-code="${item.code}">
           <div class="subject">${item.name}</div>
@@ -1046,6 +949,13 @@
       studentChatInput.focus();
     }
 
+    if (studentLogoutBtn) {
+      studentLogoutBtn.addEventListener('click', (event) => {
+        event.preventDefault();
+        window.location.href = 'index.html';
+      });
+    }
+
     burgerBtn.addEventListener('click', () => {
       sidebar.classList.add('open');
     });
@@ -1054,26 +964,36 @@
       sidebar.classList.remove('open');
     });
 
-    addClassBtn.addEventListener('click', () => {
-      joinBox.classList.toggle('visible');
-      emptyCard.style.display = 'none';
-      document.getElementById('joinCode').focus();
-    });
+    if (homeNav) {
+      homeNav.addEventListener('click', (event) => {
+        event.preventDefault();
+        sidebar.classList.remove('open');
+        emptyCard.style.display = 'flex';
+        joinBox.style.display = 'none';
+        classModal.classList.remove('open');
+        studentChatDock.classList.remove('visible');
+      });
+    }
 
-    joinNowBtn.addEventListener('click', () => {
-      joinBox.classList.add('visible');
-      emptyCard.style.display = 'none';
-      document.getElementById('joinCode').focus();
-    });
+    if (addClassTrigger) {
+      addClassTrigger.addEventListener('click', () => {
+        emptyCard.style.display = 'none';
+        joinBox.style.display = 'block';
+        document.getElementById('joinCode').focus();
+      });
+    }
+
+    if (joinClassBtn) {
+      joinClassBtn.addEventListener('click', () => {
+        emptyCard.style.display = 'none';
+        joinBox.style.display = 'block';
+        document.getElementById('joinCode').focus();
+      });
+    }
 
     joinForm.addEventListener('submit', (event) => {
       event.preventDefault();
       const code = document.getElementById('joinCode').value.trim().toUpperCase();
-      const section = document.getElementById('sectionInput').value.trim();
-      const day = document.getElementById('dayInput').value.trim();
-      const startTime = document.getElementById('startTimeInput').value.trim();
-      const endTime = document.getElementById('endTimeInput').value.trim();
-
       const availableClasses = getClasses();
       const selectedClass = availableClasses.find(item => item.code === code);
 
@@ -1090,17 +1010,16 @@
 
       joined.push({
         ...selectedClass,
-        section: section || selectedClass.section || 'N/A',
-        day: day || selectedClass.day,
-        timeStart: startTime || selectedClass.timeStart || 'N/A',
-        timeEnd: endTime || selectedClass.timeEnd || 'N/A',
-        time: `${startTime || selectedClass.timeStart || 'N/A'} - ${endTime || selectedClass.timeEnd || 'N/A'}`
+        section: selectedClass.section || 'N/A',
+        day: selectedClass.day || 'N/A',
+        timeStart: selectedClass.timeStart || 'N/A',
+        timeEnd: selectedClass.timeEnd || 'N/A',
+        time: `${selectedClass.timeStart || 'N/A'} - ${selectedClass.timeEnd || 'N/A'}`
       });
 
       saveJoined(joined);
       renderClasses();
       joinForm.reset();
-      miniForm.classList.remove('open');
       joinMessage.textContent = 'Class joined successfully!';
     });
 

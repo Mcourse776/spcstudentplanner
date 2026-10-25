@@ -257,28 +257,16 @@
     form.addEventListener("submit", function (event) {
       event.preventDefault();
 
-      const username = document.getElementById("username").value.trim();
-      const enteredPassword = password.value.trim();
+      const username =
+        document.getElementById("username").value.trim();
 
-      if (!username || !enteredPassword) {
+      if (!username || !password.value) {
         message.style.color = "#b91c1c";
         message.textContent = "Please complete all fields.";
         return;
       }
 
-      if (username === "student1" && enteredPassword === "12345678") {
-        window.location.href = "student.html";
-        return;
-      }
-
-      if (username === "teacher1" && enteredPassword === "12345678") {
-        window.location.href = "teacher.html";
-        return;
-      }
-
-      message.style.color = "#b91c1c";
-      message.textContent = "Invalid username or password.";
-    
+      window.location.href = "student.html";
     });
 
     document.getElementById("forgotLink")
