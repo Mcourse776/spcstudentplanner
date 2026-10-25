@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Teacher Chat</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: Arial, sans-serif; }
+
+    body {
+      min-height: 100vh;
+      background: #f5f7f8;
+      color: #1f2937;
+    }
+
+    .dashboard {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      position: relative;
+    }
+
+    .topbar {
+      background: #0b7948;
+      color: #fff;
+      height: 76px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 24px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    }
+
+    .left-controls {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .burger-btn {
+      width: 42px;
+      height: 42px;
+      border: none;
+      background: rgba(255,255,255,0.15);
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      padding: 0;
+    }
+
+    .burger-btn span,
+    .burger-btn span::before,
+    .burger-btn span::after {
+      display: block;
+      position: relative;
+      width: 20px;
+      height: 2px;
+      background: #fff;
+      border-radius: 2px;
+      content: "";
+    }
+
+    .burger-btn span::before { top: -6px; }
+    .burger-btn span::after { top: 6px; }
+
+    .brand {
+      font-size: 1.4rem;
+      font-weight: 700;
+    }
+
+    .logout-btn {
+      background: #fff;
+      color: #0b7948;
+      border: none;
+      border-radius: 999px;
+      padding: 10px 18px;
+      font-size: 0.9rem;
+      font-weight: bold;
+      text-decoration: none;
+      display: inline-block;
+    }
+
+    .sidebar {
+      width: 290px;
+      background: linear-gradient(180deg, #0b7948 0%, #085f3a 100%);
+      color: #fff;
+      padding: 28px 22px;
+      display: flex;
+      flex-direction: column;
+      gap: 28px;
+      transition: transform 0.3s ease;
+      transform: translateX(-100%);
+      position: fixed;
+      left: 0;
+      top: 76px;
+      bottom: 0;
+      z-index: 20;
+    }
+
+    .sidebar.open { transform: translateX(0); }
+
+    .sidebar-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .back-btn {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      border: none;
+      background: rgba(255,255,255,0.12);
+      color: #fff;
+      font-size: 1.2rem;
+      cursor: pointer;
+    }
+
+    .profile {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      padding-bottom: 18px;
+      border-bottom: 1px solid rgba(255,255,255,0.25);
+    }
+
+    .avatar {
+      width: 52px;
+      height: 52px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.2);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.2rem;
+      font-weight: bold;
+    }
+
+    .profile-text h2 {
+      font-size: 1.2rem;
+      margin-bottom: 4px;
+    }
+
+    .profile-text p {
+      font-size: 0.85rem;
+      opacity: 0.9;
+    }
+
+    .sidebar-menu {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .sidebar-link {
+      color: #fff;
+      text-decoration: none;
+      border-radius: 12px;
+      padding: 12px 14px;
+      font-weight: 700;
+      text-align: left;
+      background: rgba(255,255,255,0.08);
+    }
+
+    .content {
+      max-width: 900px;
+      width: 100%;
+      margin: 32px auto;
+      padding: 0 20px 40px;
+    }
+
+    .panel {
+      background: #fff;
+      border-radius: 20px;
+      padding: 24px;
+      box-shadow: 0 10px 30px rgba(15, 23, 42, 0.08);
+    }
+
+    .panel h1 {
+      margin-bottom: 18px;
+      font-size: clamp(2rem, 3vw, 2.4rem);
+    }
+
+    .select-wrap {
+      margin-bottom: 20px;
+    }
+
+    select {
+      width: 100%;
+      border: 1px solid #d1d5db;
+      border-radius: 12px;
+      padding: 12px 14px;
+      font-size: 0.95rem;
+      background: #fff;
+    }
+
+    .chat-list {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      max-height: 360px;
+      overflow-y: auto;
+      margin-bottom: 18px;
+      padding-right: 4px;
+    }
+
+    .chat-message {
+      max-width: 80%;
+      padding: 12px 14px;
+      border-radius: 12px;
+      line-height: 1.5;
+    }
+
+    .chat-message.student {
+      align-self: flex-end;
+      background: #0b7948;
+      color: #fff;
+    }
+
+    .chat-message.teacher {
+      align-self: flex-start;
+      background: #f3f4f6;
+      color: #111827;
+    }
+
+    .chat-message small {
+      display: block;
+      margin-top: 6px;
+      opacity: 0.8;
+    }
+
+    .message-form {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .message-form input {
+      flex: 1;
+      min-width: 180px;
+      border: 1px solid #d1d5db;
+      border-radius: 12px;
+      padding: 12px 14px;
+      font-size: 0.95rem;
+    }
+
+    .message-form button {
+      background: #0b7948;
+      color: #fff;
+      border: none;
+      border-radius: 12px;
+      padding: 12px 18px;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    .empty {
+      color: #6b7280;
+      padding: 12px 0;
+      font-style: italic;
+    }
+  </style>
+</head>
+<body>
+  <div class="dashboard">
+    <aside class="sidebar" id="teacherSidebar">
+      <div class="sidebar-top">
+        <div></div>
+        <button class="back-btn" id="teacherBackBtn" aria-label="Close sidebar">←</button>
+      </div>
+
+      <div class="profile">
+        <div class="avatar">T</div>
+        <div class="profile-text">
+          <h2>Teacher 1</h2>
+          <p>teacher1</p>
+        </div>
+      </div>
+
+      <div class="sidebar-menu">
+        <a class="sidebar-link" href="teacher.html">Classes</a>
+        <a class="sidebar-link" href="chat.html">Chat</a>
+      </div>
+    </aside>
+
+    <header class="topbar">
+      <div class="left-controls">
+        <button class="burger-btn" id="teacherBurgerBtn" aria-label="Toggle sidebar">
+          <span></span>
+        </button>
+        <div class="brand">Teacher Chat</div>
+      </div>
+      <a class="logout-btn" href="index.html">Log Out</a>
+    </header>
+
+    <main class="content">
+      <section class="panel">
+        <h1>Class Chat</h1>
+
+        <div class="select-wrap">
+          <select id="classSelect"></select>
+        </div>
+
+        <div class="chat-list" id="chatList"></div>
+
+        <form class="message-form" id="chatForm">
+          <input type="text" id="chatInput" placeholder="Write a message" maxlength="200" required>
+          <button type="submit">Send</button>
+        </form>
+      </section>
+    </main>
+  </div>
+
+  <script>
+    const CHAT_KEY = 'class_chat_messages';
+    const classSelect = document.getElementById('classSelect');
+    const chatList = document.getElementById('chatList');
+    const chatForm = document.getElementById('chatForm');
+    const chatInput = document.getElementById('chatInput');
+    const teacherSidebar = document.getElementById('teacherSidebar');
+    const teacherBurgerBtn = document.getElementById('teacherBurgerBtn');
+    const teacherBackBtn = document.getElementById('teacherBackBtn');
+
+    function getClasses() {
+      try {
+        return JSON.parse(localStorage.getItem('teacher_classes')) || [];
+      } catch {
+        return [];
+      }
+    }
+
+    function getChats() {
+      try {
+        return JSON.parse(localStorage.getItem(CHAT_KEY)) || {};
+      } catch {
+        return {};
+      }
+    }
+
+    function saveChats(chats) {
+      localStorage.setItem(CHAT_KEY, JSON.stringify(chats));
+    }
+
+    function renderOptions() {
+      const classes = getClasses();
+
+      if (!classes.length) {
+        classSelect.innerHTML = '<option value="">No classes created</option>';
+        chatList.innerHTML = '<div class="empty">Create a class first to start a chat.</div>';
+        return;
+      }
+
+      classSelect.innerHTML = classes.map(item => `
+        <option value="${item.code}">${item.name} (${item.code})</option>
+      `).join('');
+
+      renderMessages();
+    }
+
+    function renderMessages() {
+      const code = classSelect.value;
+      if (!code) return;
+
+      const chats = getChats();
+      const messages = chats[code] || [];
+
+      chatList.innerHTML = messages.length
+        ? messages.map(message => `
+            <div class="chat-message ${message.sender === 'teacher' ? 'teacher' : 'student'}">
+              ${message.text}
+              <small>${message.sender === 'teacher' ? 'Teacher' : 'Student'} • ${message.time}</small>
+            </div>
+          `).join('')
+        : '<div class="empty">No messages in this class yet.</div>';
+
+      chatList.scrollTop = chatList.scrollHeight;
+    }
+
+    classSelect.addEventListener('change', renderMessages);
+
+    chatForm.addEventListener('submit', function (event) {
+      event.preventDefault();
+      const code = classSelect.value;
+      const text = chatInput.value.trim();
+
+      if (!code || !text) return;
+
+      const chats = getChats();
+      const messages = chats[code] || [];
+      messages.push({
+        sender: 'teacher',
+        text,
+        time: new Date().toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' })
+      });
+
+      chats[code] = messages;
+      saveChats(chats);
+      chatInput.value = '';
+      renderMessages();
+    });
+
+    teacherBurgerBtn.addEventListener('click', function () {
+      teacherSidebar.classList.add('open');
+    });
+
+    teacherBackBtn.addEventListener('click', function () {
+      teacherSidebar.classList.remove('open');
+    });
+
+    renderOptions();
+  </script>
+</body>
+</html>
