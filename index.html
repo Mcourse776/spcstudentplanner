@@ -257,16 +257,37 @@
     form.addEventListener("submit", function (event) {
       event.preventDefault();
 
-      const username =
-        document.getElementById("username").value.trim();
+      const username = document.getElementById("username").value.trim();
+      const enteredPassword = password.value.trim();
 
-      if (!username || !password.value) {
+      if (!username || !enteredPassword) {
         message.style.color = "#b91c1c";
         message.textContent = "Please complete all fields.";
         return;
       }
 
-      window.location.href = "student.html";
+      const validCredentials = {
+        student1: "12345678",
+        teacher1: "87654321"
+      };
+
+      if (validCredentials[username] === undefined) {
+        message.style.color = "#b91c1c";
+        message.textContent = "Invalid username or password.";
+        return;
+      }
+
+      if (validCredentials[username] !== enteredPassword) {
+        message.style.color = "#b91c1c";
+        message.textContent = "Invalid username or password.";
+        return;
+      }
+
+      if (username === "teacher1") {
+        window.location.href = "teacher.html";
+      } else {
+        window.location.href = "student.html";
+      }
     });
 
     document.getElementById("forgotLink")
