@@ -476,6 +476,11 @@
             </div>
 
             <div class="modal-field">
+              <label for="classTask">Task / assignment</label>
+              <textarea id="classTask" rows="3" placeholder="Write the task students need to complete"></textarea>
+            </div>
+
+            <div class="modal-field">
               <label for="classCode">Class code</label>
               <input type="text" id="classCode" placeholder="Leave blank for auto-code">
             </div>
@@ -589,6 +594,7 @@
       const timeStart = document.getElementById('classTimeStart').value.trim();
       const timeEnd = document.getElementById('classTimeEnd').value.trim();
       const room = document.getElementById('classRoom').value.trim();
+      const task = document.getElementById('classTask').value.trim();
       const customCode = document.getElementById('classCode').value.trim().toUpperCase();
 
       if (!name) return;
@@ -601,6 +607,7 @@
         timeStart: timeStart || 'N/A',
         timeEnd: timeEnd || 'N/A',
         room: room || 'N/A',
+        task: task || 'No task assigned yet.',
         code: customCode || generateCode()
       };
 

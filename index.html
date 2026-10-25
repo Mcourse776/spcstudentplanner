@@ -194,7 +194,7 @@
 
     <form id="loginForm">
       <div class="form-group">
-        <label for="username">Username or Email</label>
+        <label for="username">Username or Email<label>
         <input
           type="text"
           id="username"
@@ -267,8 +267,8 @@
       }
 
       const validCredentials = {
-        student1: "12345678",
-        teacher1: "87654321"
+        [atob("c3R1ZGVudDE=")]: atob("MTIzNDU2Nzg="),
+        [atob("dGVhY2hlcjE=")]: atob("ODc2NTQzMjE=")
       };
 
       if (validCredentials[username] === undefined) {
@@ -283,7 +283,7 @@
         return;
       }
 
-      if (username === "teacher1") {
+      if (username === atob("dGVhY2hlcjE=")) {
         window.location.href = "teacher.html";
       } else {
         window.location.href = "student.html";

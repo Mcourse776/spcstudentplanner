@@ -463,21 +463,26 @@
 
     .classes-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-      gap: 18px;
-      max-width: 980px;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 20px;
+      max-width: 1100px;
       margin: 26px auto 0;
+      align-items: stretch;
     }
 
     .class-card {
-      background: linear-gradient(180deg, #ffffff 0%, #f4faf6 100%);
-      border: 1px solid #dfeee4;
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      background: #f4f4f4;
+      border: 1px solid #dfe1e4;
       border-radius: 18px;
-      padding: 20px;
-      box-shadow: 0 10px 20px rgba(17, 24, 39, 0.04);
+      padding: 14px 14px 10px;
+      box-shadow: 0 8px 18px rgba(17, 24, 39, 0.05);
       cursor: pointer;
-      border-top: 6px solid #0b7948;
+      min-height: 220px;
       transition: transform 0.2s ease, box-shadow 0.2s ease;
+      overflow: hidden;
     }
 
     .class-card:hover {
@@ -485,35 +490,171 @@
       box-shadow: 0 12px 22px rgba(17, 24, 39, 0.08);
     }
 
+    .class-card-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 10px;
+    }
+
+    .class-card-icon {
+      width: 34px;
+      height: 34px;
+      border-radius: 10px;
+      background: linear-gradient(135deg, #f0ecde 0%, #d7d1c0 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: inset 0 0 0 1px rgba(0,0,0,0.04);
+      font-size: 1rem;
+    }
+
+    .class-card-menu {
+      width: 18px;
+      height: 18px;
+      position: relative;
+      opacity: 0.8;
+    }
+
+    .class-card-menu::before,
+    .class-card-menu::after,
+    .class-card-menu span {
+      content: "";
+      position: absolute;
+      left: 50%;
+      width: 4px;
+      height: 4px;
+      border-radius: 50%;
+      background: #6b7280;
+      transform: translateX(-50%);
+    }
+
+    .class-card-menu::before { top: 2px; }
+    .class-card-menu::after { bottom: 2px; }
+    .class-card-menu span { top: 7px; }
+
+    .class-cover {
+      background: linear-gradient(180deg, #f4efe1 0%, #e6e0d1 100%);
+      border: 1px solid rgba(110, 110, 110, 0.12);
+      border-radius: 12px;
+      height: 92px;
+      margin-bottom: 16px;
+      position: relative;
+      overflow: hidden;
+      box-shadow: inset 0 0 0 1px rgba(255,255,255,0.5);
+    }
+
+    .class-cover::before {
+      content: "";
+      position: absolute;
+      left: 18px;
+      top: 12px;
+      width: 100px;
+      height: 62px;
+      border-radius: 10px;
+      background: linear-gradient(180deg, rgba(255,255,255,0.7), rgba(255,255,255,0.2));
+      border: 1px solid rgba(94, 97, 108, 0.18);
+      transform: rotate(-7deg);
+      box-shadow: 0 14px 18px rgba(0,0,0,0.06);
+    }
+
+    .class-cover::after {
+      content: "";
+      position: absolute;
+      right: 14px;
+      bottom: 12px;
+      width: 36px;
+      height: 26px;
+      border-radius: 8px;
+      background: rgba(255,255,255,0.7);
+      border: 1px solid rgba(94, 97, 108, 0.18);
+      box-shadow: inset 0 0 0 2px rgba(118, 127, 145, 0.12);
+    }
+
+    .class-card-body {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      padding: 0 2px;
+    }
+
     .subject {
-      font-size: 1.3rem;
+      font-size: 1.08rem;
       font-weight: 700;
-      margin-bottom: 8px;
-      color: #111827;
+      line-height: 1.25;
+      color: #1f2937;
+      margin: 0;
     }
 
     .meta {
       color: #4b5563;
-      line-height: 1.8;
-      font-size: 0.95rem;
+      line-height: 1.7;
+      font-size: 0.9rem;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px 14px;
+      align-items: center;
+    }
+
+    .meta span {
+      white-space: nowrap;
     }
 
     .code {
       display: inline-block;
-      margin-top: 12px;
+      margin-top: 10px;
       background: #e8f7ee;
       color: #0b7948;
       border-radius: 999px;
       padding: 6px 10px;
       font-weight: 700;
-      font-size: 0.75rem;
+      font-size: 0.72rem;
       letter-spacing: 0.08em;
+      width: fit-content;
+    }
+
+    .class-card-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+      margin-top: auto;
+      padding-top: 14px;
+      border-top: 1px solid rgba(107, 114, 128, 0.15);
+    }
+
+    .card-stat {
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+    }
+
+    .card-stat-label {
+      font-size: 0.68rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: #6b7280;
+      font-weight: 700;
+    }
+
+    .card-stat strong {
+      font-size: 0.9rem;
+      color: #1f2937;
+      font-weight: 700;
+    }
+
+    .card-icons {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      color: #6b7280;
+      font-size: 0.9rem;
     }
 
     .class-card-actions {
       display: flex;
       justify-content: flex-end;
-      margin-top: 14px;
+      margin-top: 10px;
     }
 
     .delete-class-btn {
@@ -546,6 +687,44 @@
       border-radius: 22px;
       box-shadow: 0 20px 40px rgba(17, 24, 39, 0.22);
       padding: 24px;
+    }
+
+    .task-panel {
+      margin-top: 20px;
+      background: #f8fafc;
+      border: 1px solid #e5e7eb;
+      border-radius: 14px;
+      padding: 16px;
+    }
+
+    .task-panel h4 {
+      margin-bottom: 10px;
+      font-size: 1.05rem;
+      color: #111827;
+    }
+
+    .task-panel p {
+      color: #374151;
+      line-height: 1.7;
+      margin-bottom: 14px;
+      white-space: pre-wrap;
+    }
+
+    .task-submit-btn {
+      background: #0b7948;
+      color: #fff;
+      border: none;
+      border-radius: 10px;
+      padding: 10px 16px;
+      font-size: 0.95rem;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    .task-submit-btn.submitted {
+      background: #e5e7eb;
+      color: #374151;
+      cursor: default;
     }
 
     .class-modal-header {
@@ -807,6 +986,8 @@
     const STORAGE_KEY = 'teacher_classes';
     const JOINED_KEY = 'student_joined_classes';
     const CHAT_KEY = 'class_chat_messages';
+    const SUBMISSIONS_KEY = 'student_class_submissions';
+    const SAMPLE_CLASS_CODES = ['PSY101', 'AI101', 'STAT201'];
 
     const sidebar = document.getElementById('sidebar');
     const burgerBtn = document.getElementById('burgerBtn');
@@ -866,7 +1047,28 @@
       localStorage.setItem(CHAT_KEY, JSON.stringify(messages));
     }
 
+    function getSubmissions() {
+      try {
+        return JSON.parse(localStorage.getItem(SUBMISSIONS_KEY)) || {};
+      } catch {
+        return {};
+      }
+    }
+
+    function saveSubmissions(data) {
+      localStorage.setItem(SUBMISSIONS_KEY, JSON.stringify(data));
+    }
+
+    function clearSampleDataIfNeeded() {
+      const joined = getJoined();
+      if (joined.some(item => SAMPLE_CLASS_CODES.includes(item.code))) {
+        localStorage.removeItem(JOINED_KEY);
+        localStorage.removeItem(SUBMISSIONS_KEY);
+      }
+    }
+
     function renderClasses() {
+      clearSampleDataIfNeeded();
       const classes = getJoined();
 
       if (!classes.length) {
@@ -880,14 +1082,34 @@
       joinBox.style.display = 'block';
       classListSection.innerHTML = classes.map(item => `
         <div class="class-card" data-code="${item.code}">
-          <div class="subject">${item.name}</div>
-          <div class="meta">
-            <div>Section: ${item.section || 'N/A'}</div>
-            <div>Day: ${item.day}</div>
-            <div>Time: ${item.timeStart || item.time || 'N/A'} - ${item.timeEnd || ''}</div>
-            <div>Room: ${item.room}</div>
+          <div class="class-card-top">
+            <div class="class-card-icon">📘</div>
+            <div class="class-card-menu" aria-hidden="true"><span></span></div>
           </div>
-          <span class="code">${item.code}</span>
+
+          <div class="class-cover" aria-hidden="true"></div>
+
+          <div class="class-card-body">
+            <h3 class="subject">${item.name}</h3>
+            <div class="meta">
+              <span>${item.section || 'N/A'}</span>
+              <span>${item.day}</span>
+            </div>
+            <span class="code">${item.code}</span>
+          </div>
+
+          <div class="class-card-footer">
+            <div class="card-stat">
+              <span class="card-stat-label">Students</span>
+              <strong>${item.students || 28}</strong>
+            </div>
+            <div class="card-stat">
+              <span class="card-stat-label">Homework</span>
+              <strong>${item.homework || 5}</strong>
+            </div>
+            <div class="card-icons" aria-hidden="true">✎ ⌂</div>
+          </div>
+
           <div class="class-card-actions">
             <button class="delete-class-btn" type="button" data-code="${item.code}">Delete</button>
           </div>
@@ -921,6 +1143,8 @@
 
     function openClassModal(item) {
       selectedClassCode = item.code;
+      const submissions = getSubmissions();
+      const isSubmitted = Boolean(submissions[item.code]);
       classModalTitle.textContent = item.name;
       classModalBody.innerHTML = `
         <div class="meta">
@@ -930,7 +1154,26 @@
           <div><strong>Room:</strong> ${item.room}</div>
           <div><strong>Code:</strong> ${item.code}</div>
         </div>
+
+        <div class="task-panel">
+          <h4>Given task</h4>
+          <p>${(item.task || 'No task assigned yet.').replace(/\n/g, '<br>')}</p>
+          <button class="task-submit-btn ${isSubmitted ? 'submitted' : ''}" type="button" data-code="${item.code}" ${isSubmitted ? 'disabled' : ''}>
+            ${isSubmitted ? 'Submitted' : 'Submit'}
+          </button>
+        </div>
       `;
+
+      const submitBtn = classModalBody.querySelector('.task-submit-btn');
+      if (submitBtn) {
+        submitBtn.addEventListener('click', () => {
+          const currentSubmissions = getSubmissions();
+          currentSubmissions[item.code] = true;
+          saveSubmissions(currentSubmissions);
+          openClassModal(item);
+        });
+      }
+
       studentChatDock.classList.add('visible');
       classModal.classList.add('open');
     }
