@@ -1,0 +1,1157 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Student Dashboard</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: Arial, sans-serif; }
+
+    body {
+      min-height: 100vh;
+      background: #eef2f3;
+      color: #1f2937;
+    }
+
+    a { text-decoration: none; }
+
+    .dashboard {
+      min-height: 100vh;
+      display: flex;
+      background: #eef2f3;
+      position: relative;
+    }
+
+    .sidebar {
+      width: 250px;
+      background: linear-gradient(180deg, #0b7948 0%, #085f3a 100%);
+      color: #fff;
+      padding: 18px 16px 18px;
+      transition: transform 0.28s ease;
+      transform: translateX(-100%);
+      position: fixed;
+      left: 0;
+      top: 0;
+      bottom: 0;
+      z-index: 40;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      box-shadow: 12px 0 28px rgba(11, 121, 72, 0.18);
+    }
+
+    .sidebar.open { transform: translateX(0); }
+
+    .sidebar-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 10px;
+    }
+
+    .back-btn {
+      width: 36px;
+      height: 36px;
+      border: none;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.14);
+      color: #fff;
+      font-size: 1.2rem;
+      cursor: pointer;
+    }
+
+    .profile {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      padding: 0 8px 18px;
+      margin: 0 0 8px;
+      border-bottom: 1px solid rgba(255,255,255,0.2);
+    }
+
+    .avatar {
+      width: 42px;
+      height: 42px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.18);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 1.1rem;
+      color: #fff;
+    }
+
+    .profile-text h2 {
+      font-size: 1.05rem;
+      margin-bottom: 4px;
+      color: #fff;
+    }
+
+    .profile-text p {
+      font-size: 0.8rem;
+      opacity: 0.9;
+    }
+
+    .sidebar-menu {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      margin-top: 4px;
+    }
+
+    .sidebar-link {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      color: #fff;
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 12px;
+      padding: 12px 14px;
+      font-weight: 600;
+      font-size: 1rem;
+    }
+
+    .sidebar-link.active {
+      background: rgba(255,255,255,0.12);
+      border-color: rgba(255,255,255,0.18);
+      color: #fff;
+    }
+
+    .nav-icon {
+      width: 22px;
+      text-align: center;
+      font-size: 1.1rem;
+    }
+
+    .main-panel {
+      flex: 1;
+      min-height: 100vh;
+      margin-left: 0;
+      padding: 0 0 38px;
+    }
+
+    .topbar {
+      background: linear-gradient(180deg, #0b7948 0%, #085f3a 100%);
+      color: #fff;
+      height: 76px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 24px;
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+      box-shadow: 0 4px 12px rgba(11, 121, 72, 0.15);
+    }
+
+    .left-controls {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .burger-btn {
+      width: 28px;
+      height: 28px;
+      border: none;
+      background: transparent;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      padding: 0;
+    }
+
+    .burger-btn span,
+    .burger-btn span::before,
+    .burger-btn span::after {
+      content: "";
+      display: block;
+      width: 18px;
+      height: 2px;
+      background: #fff;
+      border-radius: 2px;
+      position: relative;
+    }
+
+    .burger-btn span::before { top: -6px; }
+    .burger-btn span::after { top: 6px; }
+
+    .topbar-title {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: #fff;
+    }
+
+    .brand-mark {
+      width: 18px;
+      height: 18px;
+      background: linear-gradient(180deg, #4bab65 0%, #0b7948 100%);
+      border-radius: 4px;
+      display: inline-block;
+      position: relative;
+      box-shadow: inset 0 0 0 2px rgba(255,255,255,0.4);
+    }
+
+    .brand-mark::before {
+      content: "";
+      position: absolute;
+      inset: 4px;
+      background: rgba(255,255,255,0.7);
+      border-radius: 2px;
+    }
+
+    .topbar-actions {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .mini-icon {
+      width: 18px;
+      height: 18px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.1rem;
+      color: #fff;
+    }
+
+    .avatar-badge {
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      background: linear-gradient(180deg, #f4a743 0%, #ec8d13 100%);
+      color: #fff;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.85rem;
+    }
+
+    .logout-btn {
+      background: #fff;
+      color: #0b7948;
+      border: none;
+      border-radius: 999px;
+      padding: 10px 18px;
+      font-size: 0.9rem;
+      font-weight: bold;
+      text-decoration: none;
+      display: inline-block;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+    }
+
+    .page {
+      max-width: 1100px;
+      width: 100%;
+      margin: 26px auto 0;
+      padding: 0 20px 40px;
+    }
+
+    .page-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 18px;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+
+    .page-header h1 {
+      font-size: clamp(2rem, 3vw, 2.6rem);
+      color: #111827;
+      font-weight: 500;
+    }
+
+    .add-class-btn {
+      background: transparent;
+      color: #1a73e8;
+      border: none;
+      border-radius: 999px;
+      padding: 10px 14px;
+      font-weight: 700;
+      cursor: pointer;
+      text-decoration: none;
+      display: inline-block;
+      font-size: 1rem;
+    }
+
+    .empty-card {
+      max-width: 980px;
+      margin: 0 auto;
+      background: rgba(255,255,255,0.45);
+      border: 1px solid #dfe6ea;
+      border-radius: 18px;
+      min-height: 540px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 24px;
+    }
+
+    .illus {
+      width: 240px;
+      height: 180px;
+      position: relative;
+      margin-bottom: 18px;
+    }
+
+    .illus .frame {
+      position: absolute;
+      left: 58px;
+      top: 18px;
+      width: 120px;
+      height: 120px;
+      border: 4px solid #4c5764;
+      border-radius: 3px;
+      background: rgba(255,255,255,0.2);
+    }
+
+    .illus .frame:before,
+    .illus .frame:after {
+      content: "";
+      position: absolute;
+      background: #4c5764;
+    }
+
+    .illus .frame:before {
+      width: 4px;
+      height: 100%;
+      left: 50%;
+      transform: translateX(-50%);
+    }
+
+    .illus .frame:after {
+      height: 4px;
+      width: 100%;
+      top: 50%;
+      transform: translateY(-50%);
+    }
+
+    .illus .book {
+      position: absolute;
+      left: 56px;
+      bottom: 18px;
+      width: 160px;
+      height: 52px;
+      background: linear-gradient(135deg, #1a73e8 0%, #1f5cc7 100%);
+      border-radius: 8px 8px 10px 10px;
+      transform: rotate(-18deg);
+      box-shadow: 0 8px 12px rgba(26, 115, 232, 0.25);
+    }
+
+    .illus .book:before {
+      content: "";
+      position: absolute;
+      right: 12px;
+      top: 0;
+      width: 26px;
+      height: 100%;
+      background: rgba(255,255,255,0.18);
+      border-radius: 8px;
+    }
+
+    .illus .mug {
+      position: absolute;
+      right: 22px;
+      bottom: 26px;
+      width: 56px;
+      height: 52px;
+      background: #f4d35e;
+      border-radius: 10px 10px 14px 14px;
+      border: 3px solid #4c5764;
+      border-top: 0;
+    }
+
+    .illus .mug:before {
+      content: "";
+      position: absolute;
+      left: -12px;
+      top: 8px;
+      width: 14px;
+      height: 22px;
+      border: 3px solid #4c5764;
+      border-left: none;
+      border-radius: 0 14px 14px 0;
+    }
+
+    .illus .mug:after {
+      content: "";
+      position: absolute;
+      left: 10px;
+      top: -8px;
+      width: 30px;
+      height: 10px;
+      background: #f4d35e;
+      border: 3px solid #4c5764;
+      border-bottom: none;
+      border-radius: 10px 10px 0 0;
+    }
+
+    .empty-card p {
+      font-size: 1.08rem;
+      color: #1f2937;
+      margin-bottom: 22px;
+      font-weight: 500;
+    }
+
+    .cta-row {
+      display: flex;
+      gap: 16px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .secondary-btn,
+    .primary-btn {
+      border: none;
+      border-radius: 999px;
+      padding: 12px 26px;
+      font-size: 1.02rem;
+      font-weight: 600;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      text-decoration: none;
+    }
+
+    .secondary-btn {
+      background: transparent;
+      color: #1f2937;
+    }
+
+    .primary-btn {
+      background: #1a73e8;
+      color: white;
+      box-shadow: 0 8px 16px rgba(26, 115, 232, 0.2);
+    }
+
+    .join-box {
+      max-width: 980px;
+      margin: 26px auto 0;
+      background: #fff;
+      border-radius: 20px;
+      box-shadow: 0 12px 28px rgba(15, 23, 42, 0.08);
+      padding: 24px;
+      display: none;
+    }
+
+    .join-box.visible { display: block; }
+
+    .join-box h2 {
+      font-size: 1.2rem;
+      margin-bottom: 12px;
+    }
+
+    .join-form {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .join-form input {
+      flex: 1;
+      min-width: 220px;
+      padding: 12px 14px;
+      border-radius: 12px;
+      border: 1px solid #d1d5db;
+      font-size: 0.95rem;
+    }
+
+    .join-form button {
+      background: #0b7948;
+      color: #fff;
+      border: none;
+      border-radius: 12px;
+      padding: 12px 18px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .mini-form {
+      display: none;
+      margin-top: 18px;
+      background: #f9fafb;
+      border: 1px solid #e5e7eb;
+      border-radius: 18px;
+      padding: 18px;
+      gap: 14px;
+      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    }
+
+    .mini-form.open { display: grid; }
+
+    .mini-field {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .mini-field label {
+      font-size: 0.8rem;
+      color: #374151;
+      font-weight: 700;
+    }
+
+    .mini-field input {
+      padding: 10px 12px;
+      border-radius: 10px;
+      border: 1px solid #d1d5db;
+      font-size: 0.95rem;
+    }
+
+    .toast {
+      margin-top: 12px;
+      color: #0b7948;
+      font-weight: 600;
+      min-height: 20px;
+    }
+
+    .classes-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 18px;
+      max-width: 980px;
+      margin: 26px auto 0;
+    }
+
+    .class-card {
+      background: linear-gradient(180deg, #ffffff 0%, #f4faf6 100%);
+      border: 1px solid #dfeee4;
+      border-radius: 18px;
+      padding: 20px;
+      box-shadow: 0 10px 20px rgba(17, 24, 39, 0.04);
+      cursor: pointer;
+      border-top: 6px solid #0b7948;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .class-card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 12px 22px rgba(17, 24, 39, 0.08);
+    }
+
+    .subject {
+      font-size: 1.3rem;
+      font-weight: 700;
+      margin-bottom: 8px;
+      color: #111827;
+    }
+
+    .meta {
+      color: #4b5563;
+      line-height: 1.8;
+      font-size: 0.95rem;
+    }
+
+    .code {
+      display: inline-block;
+      margin-top: 12px;
+      background: #e8f7ee;
+      color: #0b7948;
+      border-radius: 999px;
+      padding: 6px 10px;
+      font-weight: 700;
+      font-size: 0.75rem;
+      letter-spacing: 0.08em;
+    }
+
+    .class-card-actions {
+      display: flex;
+      justify-content: flex-end;
+      margin-top: 14px;
+    }
+
+    .delete-class-btn {
+      background: #dc2626;
+      color: #fff;
+      border: none;
+      border-radius: 10px;
+      padding: 8px 12px;
+      font-size: 0.8rem;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    .class-modal {
+      position: fixed;
+      inset: 0;
+      background: rgba(15, 23, 42, 0.55);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 50;
+      padding: 20px;
+    }
+
+    .class-modal.open { display: flex; }
+
+    .class-modal-content {
+      width: min(560px, 100%);
+      background: #fff;
+      border-radius: 22px;
+      box-shadow: 0 20px 40px rgba(17, 24, 39, 0.22);
+      padding: 24px;
+    }
+
+    .class-modal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 18px;
+    }
+
+    .class-modal-header h3 {
+      font-size: 1.6rem;
+      color: #111827;
+    }
+
+    .close-modal {
+      border: none;
+      background: #e5e7eb;
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      cursor: pointer;
+      font-size: 1.2rem;
+    }
+
+    .chat-dock {
+      position: fixed;
+      right: 24px;
+      bottom: 24px;
+      width: 58px;
+      height: 58px;
+      border: none;
+      border-radius: 50%;
+      background: #0b7948;
+      color: #fff;
+      font-size: 1.5rem;
+      box-shadow: 0 10px 25px rgba(11, 121, 72, 0.35);
+      cursor: pointer;
+      display: none;
+      z-index: 40;
+    }
+
+    .chat-dock.visible { display: block; }
+
+    .chat-modal {
+      position: fixed;
+      inset: 0;
+      background: rgba(15, 23, 42, 0.55);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 50;
+      padding: 20px;
+    }
+
+    .chat-modal.open { display: flex; }
+
+    .chat-modal-content {
+      width: min(500px, 100%);
+      background: #fff;
+      border-radius: 18px;
+      padding: 18px;
+      box-shadow: 0 20px 40px rgba(17, 24, 39, 0.22);
+    }
+
+    .chat-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 12px;
+    }
+
+    .chat-header h3 {
+      font-size: 1.2rem;
+    }
+
+    .chat-close {
+      border: none;
+      background: #e5e7eb;
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      cursor: pointer;
+      font-size: 1.2rem;
+    }
+
+    .chat-body {
+      max-height: 300px;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-bottom: 12px;
+      padding-right: 4px;
+    }
+
+    .chat-message {
+      max-width: 80%;
+      padding: 10px 12px;
+      border-radius: 12px;
+      line-height: 1.5;
+      font-size: 0.95rem;
+    }
+
+    .chat-message.student {
+      align-self: flex-end;
+      background: #0b7948;
+      color: white;
+    }
+
+    .chat-message.teacher {
+      align-self: flex-start;
+      background: #f3f4f6;
+      color: #111827;
+    }
+
+    .chat-message small {
+      display: block;
+      opacity: 0.75;
+      margin-top: 4px;
+    }
+
+    .chat-form {
+      display: flex;
+      gap: 10px;
+    }
+
+    .chat-form input {
+      flex: 1;
+      border: 1px solid #d1d5db;
+      border-radius: 10px;
+      padding: 10px 12px;
+      font-size: 0.95rem;
+    }
+
+    .chat-form button {
+      background: #0b7948;
+      color: #fff;
+      border: none;
+      border-radius: 10px;
+      padding: 10px 14px;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    .empty-state {
+      background: #fff;
+      border-radius: 16px;
+      padding: 16px;
+      color: #6b7280;
+      border: 1px dashed #d1d5db;
+    }
+
+    @media (max-width: 760px) {
+      .sidebar {
+        width: 260px;
+      }
+
+      .page {
+        padding: 0 18px 30px;
+      }
+
+      .empty-card {
+        min-height: 420px;
+      }
+    }
+
+    @media (max-width: 520px) {
+      .topbar {
+        padding: 0 16px;
+      }
+
+      .topbar-title {
+        font-size: 1.1rem;
+      }
+
+      .cta-row {
+        flex-direction: column;
+        width: 100%;
+      }
+
+      .secondary-btn,
+      .primary-btn {
+        width: 100%;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="dashboard">
+    <aside class="sidebar" id="sidebar">
+      <div class="sidebar-top">
+        <div></div>
+        <button class="back-btn" id="backBtn" type="button" aria-label="Close sidebar">←</button>
+      </div>
+
+      <div class="profile">
+        <div class="avatar">S</div>
+        <div class="profile-text">
+          <h2>Student 1</h2>
+          <p>student1</p>
+        </div>
+      </div>
+
+      <div class="sidebar-menu">
+        <a class="sidebar-link active" href="#"><span class="nav-icon">⌂</span>Home</a>
+        <a class="sidebar-link" href="calendar.html"><span class="nav-icon">🗓</span>Calendar</a>
+        <a class="sidebar-link" href="#"><span class="nav-icon">⇪</span>My classes</a>
+        <a class="sidebar-link" href="#"><span class="nav-icon">⚙</span>Settings</a>
+      </div>
+    </aside>
+
+    <main class="main-panel">
+      <header class="topbar">
+        <div class="left-controls">
+          <button class="burger-btn" id="burgerBtn" type="button" aria-label="Toggle menu">
+            <span></span>
+          </button>
+        </div>
+        <div class="topbar-actions">
+          <a class="logout-btn" href="index.html">Log Out</a>
+        </div>
+      </header>
+
+      <div class="page">
+        <div class="page-header">
+          <h1>Classes</h1>
+          <button class="add-class-btn" id="addClassBtn" type="button">+ Add class</button>
+        </div>
+
+        <div class="empty-card" id="emptyCard">
+          <div class="illus" aria-hidden="true">
+            <div class="frame"></div>
+            <div class="book"></div>
+            <div class="mug"></div>
+          </div>
+          <p>Add a class to get started</p>
+          <div class="cta-row">
+            <a class="secondary-btn" href="teacher.html">Create class</a>
+            <button class="primary-btn" id="joinNowBtn" type="button">Join class</button>
+          </div>
+        </div>
+
+        <section class="join-box" id="joinBox">
+          <h2>Join a class</h2>
+          <form class="join-form" id="joinForm">
+            <input type="text" id="joinCode" placeholder="Enter class code" maxlength="8" required>
+            <button type="submit">Join</button>
+          </form>
+
+          <div class="mini-form" id="miniForm">
+            <div class="mini-field">
+              <label for="sectionInput">Section</label>
+              <input type="text" id="sectionInput" placeholder="Section A">
+            </div>
+            <div class="mini-field">
+              <label for="dayInput">Day</label>
+              <input type="text" id="dayInput" placeholder="Monday">
+            </div>
+            <div class="mini-field">
+              <label for="startTimeInput">Time Started</label>
+              <input type="text" id="startTimeInput" placeholder="8:30 AM">
+            </div>
+            <div class="mini-field">
+              <label for="endTimeInput">Time Ended</label>
+              <input type="text" id="endTimeInput" placeholder="9:45 AM">
+            </div>
+          </div>
+
+          <div class="toast" id="joinMessage"></div>
+        </section>
+
+        <section class="classes-grid" id="classListSection" aria-live="polite"></section>
+      </div>
+    </main>
+  </div>
+
+  <div class="class-modal" id="classModal">
+    <div class="class-modal-content">
+      <div class="class-modal-header">
+        <h3 id="classModalTitle">Class</h3>
+        <button class="close-modal" type="button" id="closeModalBtn">×</button>
+      </div>
+      <div id="classModalBody"></div>
+    </div>
+  </div>
+
+  <button class="chat-dock" id="studentChatDock" type="button" aria-label="Open chat">💬</button>
+
+  <div class="chat-modal" id="studentChatModal">
+    <div class="chat-modal-content">
+      <div class="chat-header">
+        <h3 id="studentChatTitle">Class Chat</h3>
+        <button class="chat-close" type="button" id="studentChatClose">×</button>
+      </div>
+      <div class="chat-body" id="studentChatBody"></div>
+      <form class="chat-form" id="studentChatForm">
+        <input type="text" id="studentChatInput" placeholder="Type a message" maxlength="200" required>
+        <button type="submit">Send</button>
+      </form>
+    </div>
+  </div>
+
+  <script>
+    const STORAGE_KEY = 'teacher_classes';
+    const JOINED_KEY = 'student_joined_classes';
+    const CHAT_KEY = 'class_chat_messages';
+
+    const sidebar = document.getElementById('sidebar');
+    const burgerBtn = document.getElementById('burgerBtn');
+    const backBtn = document.getElementById('backBtn');
+    const joinBox = document.getElementById('joinBox');
+    const joinForm = document.getElementById('joinForm');
+    const joinMessage = document.getElementById('joinMessage');
+    const emptyCard = document.getElementById('emptyCard');
+    const addClassBtn = document.getElementById('addClassBtn');
+    const joinNowBtn = document.getElementById('joinNowBtn');
+    const miniForm = document.getElementById('miniForm');
+    const classListSection = document.getElementById('classListSection');
+    const classModal = document.getElementById('classModal');
+    const classModalTitle = document.getElementById('classModalTitle');
+    const classModalBody = document.getElementById('classModalBody');
+    const closeModalBtn = document.getElementById('closeModalBtn');
+    const studentChatDock = document.getElementById('studentChatDock');
+    const studentChatTitle = document.getElementById('studentChatTitle');
+    const studentChatBody = document.getElementById('studentChatBody');
+    const studentChatModal = document.getElementById('studentChatModal');
+    const studentChatClose = document.getElementById('studentChatClose');
+    const studentChatForm = document.getElementById('studentChatForm');
+    const studentChatInput = document.getElementById('studentChatInput');
+
+    let selectedClassCode = null;
+
+    function getClasses() {
+      try {
+        return JSON.parse(localStorage.getItem(STORAGE_KEY)) || [];
+      } catch {
+        return [];
+      }
+    }
+
+    function getJoined() {
+      try {
+        return JSON.parse(localStorage.getItem(JOINED_KEY)) || [];
+      } catch {
+        return [];
+      }
+    }
+
+    function saveJoined(items) {
+      localStorage.setItem(JOINED_KEY, JSON.stringify(items));
+    }
+
+    function getChatMessages() {
+      try {
+        return JSON.parse(localStorage.getItem(CHAT_KEY)) || {};
+      } catch {
+        return {};
+      }
+    }
+
+    function saveChatMessages(messages) {
+      localStorage.setItem(CHAT_KEY, JSON.stringify(messages));
+    }
+
+    function renderClasses() {
+      const classes = getJoined();
+
+      if (!classes.length) {
+        emptyCard.style.display = 'flex';
+        joinBox.classList.remove('visible');
+        classListSection.innerHTML = '';
+        return;
+      }
+
+      emptyCard.style.display = 'none';
+      classListSection.innerHTML = classes.map(item => `
+        <div class="class-card" data-code="${item.code}">
+          <div class="subject">${item.name}</div>
+          <div class="meta">
+            <div>Section: ${item.section || 'N/A'}</div>
+            <div>Day: ${item.day}</div>
+            <div>Time: ${item.timeStart || item.time || 'N/A'} - ${item.timeEnd || ''}</div>
+            <div>Room: ${item.room}</div>
+          </div>
+          <span class="code">${item.code}</span>
+          <div class="class-card-actions">
+            <button class="delete-class-btn" type="button" data-code="${item.code}">Delete</button>
+          </div>
+        </div>
+      `).join('');
+
+      document.querySelectorAll('.class-card').forEach(card => {
+        card.addEventListener('click', () => {
+          const item = classes.find(classItem => classItem.code === card.dataset.code);
+          if (item) openClassModal(item);
+        });
+      });
+
+      document.querySelectorAll('.delete-class-btn').forEach(button => {
+        button.addEventListener('click', (event) => {
+          event.stopPropagation();
+          const code = button.dataset.code;
+          const updated = getJoined().filter(item => item.code !== code);
+          saveJoined(updated);
+
+          if (selectedClassCode === code) {
+            selectedClassCode = null;
+            classModal.classList.remove('open');
+            studentChatDock.classList.remove('visible');
+          }
+
+          renderClasses();
+        });
+      });
+    }
+
+    function openClassModal(item) {
+      selectedClassCode = item.code;
+      classModalTitle.textContent = item.name;
+      classModalBody.innerHTML = `
+        <div class="meta">
+          <div><strong>Section:</strong> ${item.section || 'N/A'}</div>
+          <div><strong>Day:</strong> ${item.day}</div>
+          <div><strong>Time:</strong> ${item.timeStart || item.time || 'N/A'} - ${item.timeEnd || ''}</div>
+          <div><strong>Room:</strong> ${item.room}</div>
+          <div><strong>Code:</strong> ${item.code}</div>
+        </div>
+      `;
+      studentChatDock.classList.add('visible');
+      classModal.classList.add('open');
+    }
+
+    function openStudentChat() {
+      if (!selectedClassCode) return;
+      const messages = getChatMessages()[selectedClassCode] || [];
+      studentChatTitle.textContent = `${selectedClassCode} Chat`;
+      studentChatBody.innerHTML = messages.length ? messages.map(message => `
+        <div class="chat-message ${message.sender === 'student' ? 'student' : 'teacher'}">
+          ${message.text}
+          <small>${message.sender === 'student' ? 'You' : 'Teacher'} • ${message.time}</small>
+        </div>
+      `).join('') : '<div class="empty-state">No messages yet. Start the conversation.</div>';
+      studentChatModal.classList.add('open');
+      studentChatInput.focus();
+    }
+
+    burgerBtn.addEventListener('click', () => {
+      sidebar.classList.add('open');
+    });
+
+    backBtn.addEventListener('click', () => {
+      sidebar.classList.remove('open');
+    });
+
+    addClassBtn.addEventListener('click', () => {
+      joinBox.classList.toggle('visible');
+      emptyCard.style.display = 'none';
+      document.getElementById('joinCode').focus();
+    });
+
+    joinNowBtn.addEventListener('click', () => {
+      joinBox.classList.add('visible');
+      emptyCard.style.display = 'none';
+      document.getElementById('joinCode').focus();
+    });
+
+    joinForm.addEventListener('submit', (event) => {
+      event.preventDefault();
+      const code = document.getElementById('joinCode').value.trim().toUpperCase();
+      const section = document.getElementById('sectionInput').value.trim();
+      const day = document.getElementById('dayInput').value.trim();
+      const startTime = document.getElementById('startTimeInput').value.trim();
+      const endTime = document.getElementById('endTimeInput').value.trim();
+
+      const availableClasses = getClasses();
+      const selectedClass = availableClasses.find(item => item.code === code);
+
+      if (!selectedClass) {
+        joinMessage.textContent = 'Class code not found. Please try again.';
+        return;
+      }
+
+      const joined = getJoined();
+      if (joined.some(item => item.code === code)) {
+        joinMessage.textContent = 'You already joined this class.';
+        return;
+      }
+
+      joined.push({
+        ...selectedClass,
+        section: section || selectedClass.section || 'N/A',
+        day: day || selectedClass.day,
+        timeStart: startTime || selectedClass.timeStart || 'N/A',
+        timeEnd: endTime || selectedClass.timeEnd || 'N/A',
+        time: `${startTime || selectedClass.timeStart || 'N/A'} - ${endTime || selectedClass.timeEnd || 'N/A'}`
+      });
+
+      saveJoined(joined);
+      renderClasses();
+      joinForm.reset();
+      miniForm.classList.remove('open');
+      joinMessage.textContent = 'Class joined successfully!';
+    });
+
+    closeModalBtn.addEventListener('click', () => {
+      classModal.classList.remove('open');
+    });
+
+    classModal.addEventListener('click', (event) => {
+      if (event.target === classModal) {
+        classModal.classList.remove('open');
+      }
+    });
+
+    studentChatDock.addEventListener('click', () => {
+      openStudentChat();
+    });
+
+    studentChatClose.addEventListener('click', () => {
+      studentChatModal.classList.remove('open');
+    });
+
+    studentChatModal.addEventListener('click', (event) => {
+      if (event.target === studentChatModal) {
+        studentChatModal.classList.remove('open');
+      }
+    });
+
+    studentChatForm.addEventListener('submit', (event) => {
+      event.preventDefault();
+      if (!selectedClassCode) return;
+
+      const text = studentChatInput.value.trim();
+      if (!text) return;
+
+      const chats = getChatMessages();
+      const messages = chats[selectedClassCode] || [];
+      messages.push({
+        sender: 'student',
+        text,
+        time: new Date().toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' })
+      });
+
+      chats[selectedClassCode] = messages;
+      saveChatMessages(chats);
+      studentChatInput.value = '';
+      openStudentChat();
+    });
+
+    renderClasses();
+  </script>
+</body>
+</html>

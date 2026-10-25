@@ -1,0 +1,622 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Teacher Dashboard</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: Arial, sans-serif; }
+
+    body {
+      min-height: 100vh;
+      background: #f5f7f8;
+      color: #1f2937;
+    }
+
+    .dashboard {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      position: relative;
+    }
+
+    .topbar {
+      background: #0b7948;
+      color: #fff;
+      height: 76px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 24px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    }
+
+    .left-controls {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .burger-btn {
+      width: 42px;
+      height: 42px;
+      border: none;
+      background: rgba(255,255,255,0.15);
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      padding: 0;
+    }
+
+    .burger-btn span,
+    .burger-btn span::before,
+    .burger-btn span::after {
+      display: block;
+      position: relative;
+      width: 20px;
+      height: 2px;
+      background: #fff;
+      border-radius: 2px;
+      content: "";
+    }
+
+    .burger-btn span::before { top: -6px; }
+    .burger-btn span::after { top: 6px; }
+
+    .brand {
+      font-size: 1.4rem;
+      font-weight: 700;
+    }
+
+    .logout-btn {
+      background: #fff;
+      color: #0b7948;
+      border: none;
+      border-radius: 999px;
+      padding: 10px 18px;
+      font-size: 0.9rem;
+      font-weight: bold;
+      text-decoration: none;
+      display: inline-block;
+    }
+
+    .content {
+      max-width: 1100px;
+      width: 100%;
+      margin: 32px auto;
+      padding: 0 20px 40px;
+    }
+
+    .header-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 24px;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+
+    h1 {
+      font-size: clamp(2rem, 3vw, 2.6rem);
+      color: #111827;
+    }
+
+    .panel {
+      background: #fff;
+      border-radius: 20px;
+      padding: 24px;
+      box-shadow: 0 10px 30px rgba(15, 23, 42, 0.08);
+      margin-bottom: 20px;
+    }
+
+    .create-class-trigger {
+      background: #0b7948;
+      color: #fff;
+      border: none;
+      border-radius: 999px;
+      padding: 10px 18px;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    .form-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 16px;
+    }
+
+    .field {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .field label {
+      font-size: 0.82rem;
+      font-weight: 700;
+      color: #374151;
+    }
+
+    .field input {
+      padding: 11px 12px;
+      border-radius: 10px;
+      border: 1px solid #d1d5db;
+      font-size: 0.95rem;
+    }
+
+    .field input:focus {
+      outline: none;
+      border-color: #0b7948;
+      box-shadow: 0 0 0 3px rgba(11, 121, 72, 0.1);
+    }
+
+    .button {
+      display: inline-block;
+      background: #0b7948;
+      color: white;
+      border: none;
+      padding: 12px 20px;
+      border-radius: 999px;
+      font-weight: bold;
+      cursor: pointer;
+      margin-top: 8px;
+    }
+
+    .modal-backdrop {
+      position: fixed;
+      inset: 0;
+      background: rgba(34, 38, 42, 0.38);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+      z-index: 50;
+    }
+
+    .modal-backdrop.open {
+      display: flex;
+    }
+
+    .modal-dialog {
+      width: min(560px, 100%);
+      background: #dfe5e8;
+      border-radius: 18px;
+      padding: 20px 22px 14px;
+      box-shadow: 0 18px 40px rgba(17, 24, 39, 0.18);
+    }
+
+    .modal-title {
+      font-size: clamp(1.5rem, 2vw, 1.9rem);
+      margin-bottom: 12px;
+      color: #1f2937;
+      font-weight: 500;
+    }
+
+    .modal-form {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+    }
+
+    .modal-field {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      padding: 12px 0 10px;
+      border-bottom: 1px solid rgba(31, 41, 55, 0.18);
+    }
+
+    .modal-field:first-child {
+      padding-top: 0;
+    }
+
+    .modal-field label {
+      font-size: 1.02rem;
+      color: #1f2937;
+      font-weight: 400;
+    }
+
+    .modal-field input {
+      border: none;
+      border-bottom: 2px solid #1d7de0;
+      background: transparent;
+      padding: 0 0 6px;
+      font-size: 1rem;
+      color: #1f2937;
+      outline: none;
+    }
+
+    .modal-field input::placeholder {
+      color: rgba(31, 41, 55, 0.55);
+    }
+
+    .required-mark {
+      color: #1d7de0;
+      margin-left: 4px;
+    }
+
+    .modal-actions {
+      display: flex;
+      justify-content: flex-end;
+      gap: 14px;
+      margin-top: 12px;
+      padding-top: 8px;
+    }
+
+    .modal-link {
+      background: transparent;
+      border: none;
+      color: #1d7de0;
+      font-size: 1rem;
+      cursor: pointer;
+      padding: 6px 10px;
+      font-weight: 500;
+    }
+
+    .sidebar {
+      width: 290px;
+      background: linear-gradient(180deg, #0b7948 0%, #085f3a 100%);
+      color: #fff;
+      padding: 28px 22px;
+      display: flex;
+      flex-direction: column;
+      gap: 28px;
+      transition: transform 0.3s ease;
+      transform: translateX(-100%);
+      position: fixed;
+      left: 0;
+      top: 76px;
+      bottom: 0;
+      z-index: 20;
+    }
+
+    .sidebar.open { transform: translateX(0); }
+
+    .sidebar-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .back-btn {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      border: none;
+      background: rgba(255,255,255,0.12);
+      color: #fff;
+      font-size: 1.2rem;
+      cursor: pointer;
+    }
+
+    .profile {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      padding-bottom: 18px;
+      border-bottom: 1px solid rgba(255,255,255,0.25);
+    }
+
+    .avatar {
+      width: 52px;
+      height: 52px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.2);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.2rem;
+      font-weight: bold;
+    }
+
+    .profile-text h2 {
+      font-size: 1.2rem;
+      margin-bottom: 4px;
+    }
+
+    .profile-text p {
+      font-size: 0.85rem;
+      opacity: 0.9;
+    }
+
+    .sidebar-menu {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .sidebar-link {
+      color: #fff;
+      text-decoration: none;
+      border-radius: 12px;
+      padding: 12px 14px;
+      font-weight: 700;
+      text-align: left;
+      background: rgba(255,255,255,0.08);
+    }
+
+    .class-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 18px;
+      margin-top: 20px;
+    }
+
+    .class-card {
+      background: linear-gradient(180deg, #ffffff 0%, #f4faf6 100%);
+      border: 1px solid #dfeee4;
+      border-radius: 18px;
+      padding: 20px;
+      box-shadow: 0 10px 20px rgba(17, 24, 39, 0.04);
+    }
+
+    .class-card h3 {
+      margin-bottom: 10px;
+      color: #111827;
+      font-size: 1.3rem;
+    }
+
+    .meta {
+      color: #4b5563;
+      font-size: 0.95rem;
+      line-height: 1.7;
+    }
+
+    .code-tag {
+      display: inline-block;
+      margin-top: 12px;
+      background: #0b7948;
+      color: #fff;
+      border-radius: 999px;
+      padding: 6px 10px;
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+    }
+
+    .class-actions {
+      display: flex;
+      justify-content: flex-end;
+      margin-top: 14px;
+    }
+
+    .delete-btn {
+      background: #dc2626;
+      color: #fff;
+      border: none;
+      border-radius: 10px;
+      padding: 8px 12px;
+      font-size: 0.85rem;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    .empty {
+      color: #6b7280;
+      padding: 12px 0;
+      font-style: italic;
+    }
+  </style>
+</head>
+<body>
+  <div class="dashboard">
+    <aside class="sidebar" id="teacherSidebar">
+      <div class="sidebar-top">
+        <div></div>
+        <button class="back-btn" id="teacherBackBtn" aria-label="Close sidebar">←</button>
+      </div>
+
+      <div class="profile">
+        <div class="avatar">T</div>
+        <div class="profile-text">
+          <h2>Teacher 1</h2>
+          <p>teacher1</p>
+        </div>
+      </div>
+
+      <div class="sidebar-menu">
+        <a class="sidebar-link" href="#classList">Classes</a>
+        <a class="sidebar-link" href="chat.html">Chat</a>
+      </div>
+    </aside>
+
+    <header class="topbar">
+      <div class="left-controls">
+        <button class="burger-btn" id="teacherBurgerBtn" aria-label="Toggle sidebar">
+          <span></span>
+        </button>
+        <div class="brand">Teacher Dashboard</div>
+      </div>
+      <a class="logout-btn" href="index.html">Log Out</a>
+    </header>
+
+    <main class="content">
+      <div class="header-row">
+        <h1>Classes</h1>
+        <button class="create-class-trigger" id="openCreateModalBtn" type="button">Create class</button>
+      </div>
+
+      <div class="modal-backdrop" id="createClassModal" aria-hidden="true">
+        <div class="modal-dialog" role="dialog" aria-modal="true" aria-labelledby="createClassTitle">
+          <h2 class="modal-title" id="createClassTitle">Create class</h2>
+
+          <form id="classForm" class="modal-form">
+            <div class="modal-field">
+              <label for="className">Class name<span class="required-mark">*</span></label>
+              <input type="text" id="className" placeholder="Required" required>
+            </div>
+
+            <div class="modal-field">
+              <label for="classSection">Section</label>
+              <input type="text" id="classSection" placeholder="Section A">
+            </div>
+
+            <div class="modal-field">
+              <label for="classDay">Day</label>
+              <input type="text" id="classDay" placeholder="Monday">
+            </div>
+
+            <div class="modal-field">
+              <label for="classTimeStart">Time Started</label>
+              <input type="text" id="classTimeStart" placeholder="8:30 AM">
+            </div>
+
+            <div class="modal-field">
+              <label for="classTimeEnd">Time Ended</label>
+              <input type="text" id="classTimeEnd" placeholder="9:45 AM">
+            </div>
+
+            <div class="modal-field">
+              <label for="classRoom">Room</label>
+              <input type="text" id="classRoom" placeholder="Room 204">
+            </div>
+
+            <div class="modal-field">
+              <label for="classCode">Class code</label>
+              <input type="text" id="classCode" placeholder="Leave blank for auto-code">
+            </div>
+
+            <div class="modal-actions">
+              <button class="modal-link" type="button" id="cancelCreateModalBtn">Cancel</button>
+              <button class="modal-link" type="submit">Create</button>
+            </div>
+          </form>
+        </div>
+      </div>
+
+      <section class="panel" id="classList">
+        <h2>Created Classes</h2>
+        <div id="classListGrid" class="class-grid"></div>
+      </section>
+    </main>
+  </div>
+
+  <script>
+    const classForm = document.getElementById('classForm');
+    const classListGrid = document.getElementById('classListGrid');
+    const teacherSidebar = document.getElementById('teacherSidebar');
+    const teacherBurgerBtn = document.getElementById('teacherBurgerBtn');
+    const teacherBackBtn = document.getElementById('teacherBackBtn');
+    const createClassModal = document.getElementById('createClassModal');
+    const openCreateModalBtn = document.getElementById('openCreateModalBtn');
+    const cancelCreateModalBtn = document.getElementById('cancelCreateModalBtn');
+    const STORAGE_KEY = 'teacher_classes';
+
+    function generateCode() {
+      const letters = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
+      let code = '';
+      for (let i = 0; i < 6; i++) {
+        code += letters[Math.floor(Math.random() * letters.length)];
+      }
+      return code;
+    }
+
+    function getClasses() {
+      try {
+        return JSON.parse(localStorage.getItem(STORAGE_KEY)) || [];
+      } catch {
+        return [];
+      }
+    }
+
+    function saveClasses(classes) {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(classes));
+    }
+
+    function renderClasses() {
+      const classes = getClasses();
+
+      if (!classes.length) {
+        classListGrid.innerHTML = '<div class="empty">No classes created yet.</div>';
+        return;
+      }
+
+      classListGrid.innerHTML = classes.map(item => `
+        <div class="class-card">
+          <h3>${item.name}</h3>
+          <div class="meta">
+            <div>Section: ${item.section || 'N/A'}</div>
+            <div>Day: ${item.day}</div>
+            <div>Time: ${item.timeStart || item.time} - ${item.timeEnd || ''}</div>
+            <div>Room: ${item.room}</div>
+          </div>
+          <div class="code-tag">Code: ${item.code}</div>
+          <div class="class-actions">
+            <button class="delete-btn" type="button" data-id="${item.id}">Delete class</button>
+          </div>
+        </div>
+      `).join('');
+
+      document.querySelectorAll('.delete-btn').forEach(button => {
+        button.addEventListener('click', function () {
+          const id = Number(this.dataset.id);
+          const updatedClasses = getClasses().filter(item => item.id !== id);
+          saveClasses(updatedClasses);
+          renderClasses();
+        });
+      });
+    }
+
+    function closeCreateModal() {
+      createClassModal.classList.remove('open');
+      createClassModal.setAttribute('aria-hidden', 'true');
+    }
+
+    function openCreateModal() {
+      createClassModal.classList.add('open');
+      createClassModal.setAttribute('aria-hidden', 'false');
+      document.getElementById('className').focus();
+    }
+
+    classForm.addEventListener('submit', function (event) {
+      event.preventDefault();
+
+      const name = document.getElementById('className').value.trim();
+      const section = document.getElementById('classSection').value.trim();
+      const day = document.getElementById('classDay').value.trim();
+      const timeStart = document.getElementById('classTimeStart').value.trim();
+      const timeEnd = document.getElementById('classTimeEnd').value.trim();
+      const room = document.getElementById('classRoom').value.trim();
+      const customCode = document.getElementById('classCode').value.trim().toUpperCase();
+
+      if (!name) return;
+
+      const newClass = {
+        id: Date.now(),
+        name,
+        section,
+        day: day || 'N/A',
+        timeStart: timeStart || 'N/A',
+        timeEnd: timeEnd || 'N/A',
+        room: room || 'N/A',
+        code: customCode || generateCode()
+      };
+
+      const classes = getClasses();
+      classes.unshift(newClass);
+      saveClasses(classes);
+      renderClasses();
+      classForm.reset();
+      closeCreateModal();
+    });
+
+    openCreateModalBtn.addEventListener('click', openCreateModal);
+    cancelCreateModalBtn.addEventListener('click', closeCreateModal);
+    createClassModal.addEventListener('click', function (event) {
+      if (event.target === createClassModal) closeCreateModal();
+    });
+
+    teacherBurgerBtn.addEventListener('click', function () {
+      teacherSidebar.classList.add('open');
+    });
+
+    teacherBackBtn.addEventListener('click', function () {
+      teacherSidebar.classList.remove('open');
+    });
+
+    renderClasses();
+  </script>
+</body>
+</html>
