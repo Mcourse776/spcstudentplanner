@@ -248,6 +248,16 @@
     const form = document.getElementById("loginForm");
     const message = document.getElementById("message");
 
+    const currentRole = sessionStorage.getItem("authRole");
+    if (currentRole === "teacher") {
+      window.location.href = "teacher.html";
+      throw new Error("Redirecting to teacher dashboard.");
+    }
+    if (currentRole === "student") {
+      window.location.href = "student.html";
+      throw new Error("Redirecting to student dashboard.");
+    }
+
     toggle.addEventListener("click", function () {
       const showing = password.type === "password";
       password.type = showing ? "text" : "password";
@@ -283,7 +293,11 @@
         return;
       }
 
-      if (username === atob("dGVhY2hlcjE=")) {
+      const userRole = username === atob("dGVhY2hlcjE=") ? "teacher" : "student";
+      sessionStorage.setItem("authUser", username);
+      sessionStorage.setItem("authRole", userRole);
+
+      if (userRole === "teacher") {
         window.location.href = "teacher.html";
       } else {
         window.location.href = "student.html";

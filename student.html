@@ -983,6 +983,11 @@
   </div>
 
   <script>
+    if (!sessionStorage.getItem('authUser') || sessionStorage.getItem('authRole') !== 'student') {
+      window.location.href = 'index.html';
+      throw new Error('Unauthorized access. Please log in first.');
+    }
+
     const STORAGE_KEY = 'teacher_classes';
     const JOINED_KEY = 'student_joined_classes';
     const CHAT_KEY = 'class_chat_messages';
@@ -1195,10 +1200,12 @@
     if (studentLogoutBtn) {
       studentLogoutBtn.addEventListener('click', (event) => {
         event.preventDefault();
+        sessionStorage.removeItem('authUser');
+        sessionStorage.removeItem('authRole');
         window.location.href = 'index.html';
       });
     }
-
+ 
     burgerBtn.addEventListener('click', () => {
       sidebar.classList.add('open');
     });
