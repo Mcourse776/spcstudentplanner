@@ -910,7 +910,7 @@
       <div class="sidebar-menu">
         <a class="sidebar-link active" href="#" id="homeNav"><span class="nav-icon">⌂</span>Home</a>
         <a class="sidebar-link" href="calendar.html"><span class="nav-icon">🗓</span>Calendar</a>
-        <a class="sidebar-link" href="#"><span class="nav-icon">⇪</span>My classes</a>
+        <a class="sidebar-link" href="student-chat.html" id="chatNav"><span class="nav-icon">⇪</span>Chats</a>
         <a class="sidebar-link" href="#"><span class="nav-icon">⚙</span>Settings</a>
       </div>
     </aside>
@@ -998,6 +998,7 @@
     const burgerBtn = document.getElementById('burgerBtn');
     const backBtn = document.getElementById('backBtn');
     const homeNav = document.getElementById('homeNav');
+    const chatNav = document.getElementById('chatNav');
     const studentLogoutBtn = document.getElementById('studentLogoutBtn');
     const addClassTrigger = document.getElementById('addClassTrigger');
     const joinClassBtn = document.getElementById('joinClassBtn');
@@ -1080,6 +1081,9 @@
         emptyCard.style.display = 'flex';
         joinBox.style.display = 'none';
         classListSection.innerHTML = '';
+        if (studentChatModal.classList.contains('open')) {
+          studentChatModal.classList.remove('open');
+        }
         return;
       }
 
@@ -1205,6 +1209,15 @@
         window.location.href = 'index.html';
       });
     }
+
+    window.addEventListener('storage', (event) => {
+      if (event.key === CHAT_KEY || event.key === STORAGE_KEY || event.key === JOINED_KEY) {
+        renderClasses();
+        if (studentChatModal.classList.contains('open')) {
+          openStudentChat();
+        }
+      }
+    });
  
     burgerBtn.addEventListener('click', () => {
       sidebar.classList.add('open');
@@ -1222,6 +1235,14 @@
         joinBox.style.display = 'none';
         classModal.classList.remove('open');
         studentChatDock.classList.remove('visible');
+      });
+    }
+
+    if (chatNav) {
+      chatNav.addEventListener('click', (event) => {
+        event.preventDefault();
+        sidebar.classList.remove('open');
+        window.location.href = 'student-chat.html';
       });
     }
 

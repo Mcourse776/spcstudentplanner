@@ -3,337 +3,387 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Teacher Chat</title>
+  <title>Teacher Chats</title>
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; font-family: Arial, sans-serif; }
 
     body {
       min-height: 100vh;
-      background: #f5f7f8;
-      color: #1f2937;
-    }
-
-    .dashboard {
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-      position: relative;
-    }
-
-    .topbar {
-      background: #0b7948;
-      color: #fff;
-      height: 76px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 0 24px;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.08);
-    }
-
-    .left-controls {
-      display: flex;
-      align-items: center;
-      gap: 14px;
-    }
-
-    .burger-btn {
-      width: 42px;
-      height: 42px;
-      border: none;
-      background: rgba(255,255,255,0.15);
-      border-radius: 10px;
+      background: #eef2f5;
       display: flex;
       align-items: center;
       justify-content: center;
-      cursor: pointer;
-      padding: 0;
-    }
-
-    .burger-btn span,
-    .burger-btn span::before,
-    .burger-btn span::after {
-      display: block;
-      position: relative;
-      width: 20px;
-      height: 2px;
-      background: #fff;
-      border-radius: 2px;
-      content: "";
-    }
-
-    .burger-btn span::before { top: -6px; }
-    .burger-btn span::after { top: 6px; }
-
-    .brand {
-      font-size: 1.4rem;
-      font-weight: 700;
-    }
-
-    .logout-btn {
-      background: #fff;
-      color: #0b7948;
-      border: none;
-      border-radius: 999px;
-      padding: 10px 18px;
-      font-size: 0.9rem;
-      font-weight: bold;
-      text-decoration: none;
-      display: inline-block;
-    }
-
-    .sidebar {
-      width: 290px;
-      background: linear-gradient(180deg, #0b7948 0%, #085f3a 100%);
-      color: #fff;
-      padding: 28px 22px;
-      display: flex;
-      flex-direction: column;
-      gap: 28px;
-      transition: transform 0.3s ease;
-      transform: translateX(-100%);
-      position: fixed;
-      left: 0;
-      top: 76px;
-      bottom: 0;
-      z-index: 20;
-    }
-
-    .sidebar.open { transform: translateX(0); }
-
-    .sidebar-top {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-
-    .back-btn {
-      width: 36px;
-      height: 36px;
-      border-radius: 50%;
-      border: none;
-      background: rgba(255,255,255,0.12);
-      color: #fff;
-      font-size: 1.2rem;
-      cursor: pointer;
-    }
-
-    .profile {
-      display: flex;
-      align-items: center;
-      gap: 14px;
-      padding-bottom: 18px;
-      border-bottom: 1px solid rgba(255,255,255,0.25);
-    }
-
-    .avatar {
-      width: 52px;
-      height: 52px;
-      border-radius: 50%;
-      background: rgba(255,255,255,0.2);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 1.2rem;
-      font-weight: bold;
-    }
-
-    .profile-text h2 {
-      font-size: 1.2rem;
-      margin-bottom: 4px;
-    }
-
-    .profile-text p {
-      font-size: 0.85rem;
-      opacity: 0.9;
-    }
-
-    .sidebar-menu {
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-    }
-
-    .sidebar-link {
-      color: #fff;
-      text-decoration: none;
-      border-radius: 12px;
-      padding: 12px 14px;
-      font-weight: 700;
-      text-align: left;
-      background: rgba(255,255,255,0.08);
-    }
-
-    .content {
-      max-width: 900px;
-      width: 100%;
-      margin: 32px auto;
-      padding: 0 20px 40px;
-    }
-
-    .panel {
-      background: #fff;
-      border-radius: 20px;
       padding: 24px;
-      box-shadow: 0 10px 30px rgba(15, 23, 42, 0.08);
-    }
-
-    .panel h1 {
-      margin-bottom: 18px;
-      font-size: clamp(2rem, 3vw, 2.4rem);
-    }
-
-    .select-wrap {
-      margin-bottom: 20px;
-    }
-
-    select {
-      width: 100%;
-      border: 1px solid #d1d5db;
-      border-radius: 12px;
-      padding: 12px 14px;
-      font-size: 0.95rem;
-      background: #fff;
-    }
-
-    .chat-list {
-      display: flex;
-      flex-direction: column;
-      gap: 12px;
-      max-height: 360px;
-      overflow-y: auto;
-      margin-bottom: 18px;
-      padding-right: 4px;
-    }
-
-    .chat-message {
-      max-width: 80%;
-      padding: 12px 14px;
-      border-radius: 12px;
-      line-height: 1.5;
-    }
-
-    .chat-message.student {
-      align-self: flex-end;
-      background: #0b7948;
-      color: #fff;
-    }
-
-    .chat-message.teacher {
-      align-self: flex-start;
-      background: #f3f4f6;
       color: #111827;
     }
 
-    .chat-message small {
-      display: block;
-      margin-top: 6px;
-      opacity: 0.8;
+    .messenger-shell {
+      width: min(1180px, 100%);
+      height: 780px;
+      background: #f8f9fb;
+      border-radius: 24px;
+      box-shadow: 0 18px 38px rgba(15, 23, 42, 0.08);
+      overflow: hidden;
+      display: grid;
+      grid-template-columns: 360px 1fr;
     }
 
-    .message-form {
+    .sidebar-list {
+      background: #f6f7f9;
+      border-right: 1px solid #e5e7eb;
+      padding: 18px 14px 0;
       display: flex;
-      gap: 12px;
-      flex-wrap: wrap;
+      flex-direction: column;
     }
 
-    .message-form input {
-      flex: 1;
-      min-width: 180px;
-      border: 1px solid #d1d5db;
-      border-radius: 12px;
-      padding: 12px 14px;
-      font-size: 0.95rem;
-    }
-
-    .message-form button {
-      background: #0b7948;
-      color: #fff;
-      border: none;
-      border-radius: 12px;
-      padding: 12px 18px;
+    .chat-topbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 4px 8px 18px;
       font-weight: 700;
+    }
+
+    .chat-topbar h1 {
+      font-size: 1.05rem;
+      font-weight: 700;
+    }
+
+    .menu-dots {
+      font-size: 1.4rem;
+      color: #374151;
+      line-height: 1;
       cursor: pointer;
     }
 
-    .empty {
+    .chat-header-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 8px 8px 14px;
+    }
+
+    .chat-header-row h2 {
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: #111827;
+    }
+
+    .filter {
+      font-size: 0.95rem;
+      font-weight: 600;
+      color: #111827;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .contact-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      overflow-y: auto;
+      padding: 0 6px 10px;
+    }
+
+    .contact-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 12px 10px;
+      border-radius: 16px;
+      cursor: pointer;
+      transition: 0.2s ease;
+      background: transparent;
+    }
+
+    .contact-item.active {
+      background: #eef5ff;
+    }
+
+    .contact-avatar {
+      width: 42px;
+      height: 42px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.88rem;
+      font-weight: 700;
+      color: #fff;
+      background: linear-gradient(135deg, #8c9eff, #5d7cfe);
+      flex-shrink: 0;
+    }
+
+    .contact-item:nth-child(2n) .contact-avatar {
+      background: linear-gradient(135deg, #f7b267, #f4845f);
+    }
+
+    .contact-item:nth-child(3n) .contact-avatar {
+      background: linear-gradient(135deg, #63d2a8, #3bb273);
+    }
+
+    .contact-main {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .contact-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      margin-bottom: 4px;
+    }
+
+    .contact-name {
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: #111827;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .contact-time {
       color: #6b7280;
-      padding: 12px 0;
+      font-size: 0.72rem;
+      white-space: nowrap;
+    }
+
+    .contact-preview {
+      color: #6b7280;
+      font-size: 0.82rem;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .conversation-panel {
+      display: flex;
+      flex-direction: column;
+      background: #f5f7fa;
+    }
+
+    .conversation-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: #f5f7fa;
+      padding: 18px 20px 12px;
+      border-bottom: 1px solid #e5e7eb;
+    }
+
+    .chat-user {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .chat-user .contact-avatar {
+      width: 38px;
+      height: 38px;
+      font-size: 0.8rem;
+    }
+
+    .chat-user h3 {
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: #111827;
+    }
+
+    .online-pill {
+      color: #1f9d55;
+      font-size: 0.72rem;
+      font-weight: 700;
+      margin-top: 2px;
+    }
+
+    .conversation-body {
+      flex: 1;
+      padding: 18px 22px 0;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+      background: #f1f3f6;
+    }
+
+    .message-row {
+      display: flex;
+      width: 100%;
+    }
+
+    .message-row.outgoing {
+      justify-content: flex-end;
+    }
+
+    .bubble {
+      max-width: 68%;
+      padding: 12px 16px;
+      border-radius: 18px;
+      line-height: 1.5;
+      font-size: 0.95rem;
+      word-wrap: break-word;
+    }
+
+    .bubble.incoming {
+      background: #dfe8f9;
+      color: #111827;
+      border-top-left-radius: 6px;
+    }
+
+    .bubble.outgoing {
+      background: #3d8bfd;
+      color: #fff;
+      border-top-right-radius: 6px;
+    }
+
+    .bubble small {
+      display: block;
+      margin-top: 8px;
+      opacity: 0.8;
+      font-size: 0.68rem;
+    }
+
+    .composer {
+      display: none;
+      align-items: center;
+      gap: 12px;
+      padding: 18px 20px 22px;
+      background: #f5f7fa;
+      border-top: 1px solid #e5e7eb;
+    }
+
+    .composer.visible {
+      display: flex;
+    }
+
+    .plus-btn {
+      width: 38px;
+      height: 38px;
+      border: none;
+      border-radius: 50%;
+      background: #1e88ff;
+      color: white;
+      font-size: 1.5rem;
+      cursor: pointer;
+      line-height: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .composer input {
+      flex: 1;
+      border: 1px solid #dfe3ea;
+      border-radius: 999px;
+      padding: 14px 18px;
+      font-size: 0.96rem;
+      background: #fff;
+      outline: none;
+    }
+
+    .composer input:focus {
+      border-color: #4c8bf5;
+      box-shadow: 0 0 0 3px rgba(76, 139, 245, 0.12);
+    }
+
+    .tool-btn {
+      width: 38px;
+      height: 38px;
+      border: none;
+      border-radius: 50%;
+      background: #e6edf8;
+      color: #2d3748;
+      font-size: 1.1rem;
+      cursor: pointer;
+    }
+
+    .empty-state {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100%;
+      color: #6b7280;
       font-style: italic;
+      text-align: center;
+      padding: 30px;
+    }
+
+    @media (max-width: 920px) {
+      .messenger-shell {
+        grid-template-columns: 1fr;
+      }
+
+      .sidebar-list {
+        border-right: none;
+        border-bottom: 1px solid #e5e7eb;
+      }
     }
   </style>
 </head>
 <body>
-  <div class="dashboard">
-    <aside class="sidebar" id="teacherSidebar">
-      <div class="sidebar-top">
-        <div></div>
-        <button class="back-btn" id="teacherBackBtn" aria-label="Close sidebar">←</button>
+  <div class="messenger-shell">
+    <aside class="sidebar-list">
+      <div class="chat-topbar">
+        <h1>Messenger</h1>
+        <div class="menu-dots">•••</div>
       </div>
 
-      <div class="profile">
-        <div class="avatar">T</div>
-        <div class="profile-text">
-          <h2>Teacher 1</h2>
-          <p>teacher1</p>
-        </div>
+      <div class="chat-header-row">
+        <h2>Class chats</h2>
+        <div class="filter">Newest <span>⌄</span></div>
       </div>
 
-      <div class="sidebar-menu">
-        <a class="sidebar-link" href="teacher.html">Classes</a>
-        <a class="sidebar-link" href="chat.html">Chat</a>
-      </div>
+      <ul class="contact-list" id="contactList"></ul>
     </aside>
 
-    <header class="topbar">
-      <div class="left-controls">
-        <button class="burger-btn" id="teacherBurgerBtn" aria-label="Toggle sidebar">
-          <span></span>
-        </button>
-        <div class="brand">Teacher Chat</div>
-      </div>
-      <a class="logout-btn" href="index.html" id="chatLogoutBtn">Log Out</a>
-    </header>
-
-    <main class="content">
-      <section class="panel">
-        <h1>Class Chat</h1>
-
-        <div class="select-wrap">
-          <select id="classSelect"></select>
+    <section class="conversation-panel">
+      <div class="conversation-header">
+        <div class="chat-user">
+          <div class="contact-avatar" id="activeAvatar">C</div>
+          <div>
+            <h3 id="activeName">Class</h3>
+            <div class="online-pill">Active now</div>
+          </div>
         </div>
+      </div>
 
-        <div class="chat-list" id="chatList"></div>
+      <div class="conversation-body" id="conversationBody">
+        <div class="empty-state">Select a class conversation to open the messages.</div>
+      </div>
 
-        <form class="message-form" id="chatForm">
-          <input type="text" id="chatInput" placeholder="Write a message" maxlength="200" required>
-          <button type="submit">Send</button>
-        </form>
-      </section>
-    </main>
+      <form class="composer" id="composerForm">
+        <button class="plus-btn" type="button" aria-label="Add">+</button>
+        <input type="text" id="messageInput" placeholder="Type something here..." maxlength="200" required>
+        <button class="tool-btn" type="button" aria-label="emoji">☺</button>
+        <button class="tool-btn" type="button" aria-label="send image">📎</button>
+      </form>
+    </section>
   </div>
 
   <script>
-    const CHAT_KEY = 'class_chat_messages';
-    const classSelect = document.getElementById('classSelect');
-    const chatList = document.getElementById('chatList');
-    const chatForm = document.getElementById('chatForm');
-    const chatInput = document.getElementById('chatInput');
-    const teacherSidebar = document.getElementById('teacherSidebar');
-    const teacherBurgerBtn = document.getElementById('teacherBurgerBtn');
-    const teacherBackBtn = document.getElementById('teacherBackBtn');
-    const chatLogoutBtn = document.getElementById('chatLogoutBtn');
-
-    if (chatLogoutBtn) {
-      chatLogoutBtn.addEventListener('click', (event) => {
-        event.preventDefault();
-        window.location.href = 'index.html';
-      });
+    if (!sessionStorage.getItem('authUser') || sessionStorage.getItem('authRole') !== 'teacher') {
+      window.location.href = 'index.html';
+      throw new Error('Unauthorized access. Please log in first.');
     }
+
+    const CHAT_KEY = 'class_chat_messages';
+    const STORAGE_KEY = 'teacher_classes';
+    const contactList = document.getElementById('contactList');
+    const conversationBody = document.getElementById('conversationBody');
+    const activeName = document.getElementById('activeName');
+    const activeAvatar = document.getElementById('activeAvatar');
+    const composerForm = document.getElementById('composerForm');
+    const messageInput = document.getElementById('messageInput');
+
+    let activeCode = null;
 
     function getClasses() {
       try {
-        return JSON.parse(localStorage.getItem('teacher_classes')) || [];
+        return JSON.parse(localStorage.getItem(STORAGE_KEY)) || [];
       } catch {
         return [];
       }
@@ -351,73 +401,128 @@
       localStorage.setItem(CHAT_KEY, JSON.stringify(chats));
     }
 
-    function renderOptions() {
+    function getInitials(name) {
+      return name
+        .split(' ')
+        .map(part => part[0])
+        .join('')
+        .slice(0, 2)
+        .toUpperCase();
+    }
+
+    function renderContacts() {
       const classes = getClasses();
 
       if (!classes.length) {
-        classSelect.innerHTML = '<option value="">No classes created</option>';
-        chatList.innerHTML = '<div class="empty">Create a class first to start a chat.</div>';
+        contactList.innerHTML = '<li class="empty-state">Create a class to begin chatting.</li>';
+        conversationBody.innerHTML = '<div class="empty-state">Select a class conversation to open the messages.</div>';
+        activeName.textContent = 'Class';
+        activeAvatar.textContent = 'C';
+        activeCode = null;
+        composerForm.classList.remove('visible');
         return;
       }
 
-      classSelect.innerHTML = classes.map(item => `
-        <option value="${item.code}">${item.name} (${item.code})</option>
+      const chats = getChats();
+      const items = classes.map(item => {
+        const messages = chats[item.code] || [];
+        const lastMessage = messages[messages.length - 1];
+        return {
+          code: item.code,
+          name: item.name,
+          preview: lastMessage ? lastMessage.text : 'No messages yet',
+          time: lastMessage ? lastMessage.time : ''
+        };
+      });
+
+      if (!activeCode || !items.some(item => item.code === activeCode)) {
+        activeCode = items[0].code;
+      }
+
+      contactList.innerHTML = items.map(item => `
+        <li class="contact-item ${item.code === activeCode ? 'active' : ''}" data-code="${item.code}">
+          <div class="contact-avatar">${getInitials(item.name)}</div>
+          <div class="contact-main">
+            <div class="contact-row">
+              <span class="contact-name">${item.name}</span>
+              <span class="contact-time">${item.time || ''}</span>
+            </div>
+            <div class="contact-preview">${item.preview}</div>
+          </div>
+        </li>
       `).join('');
 
-      renderMessages();
+      document.querySelectorAll('.contact-item').forEach(item => {
+        item.addEventListener('click', () => {
+          activeCode = item.dataset.code;
+          renderContacts();
+        });
+      });
+
+      renderConversation();
     }
 
-    function renderMessages() {
-      const code = classSelect.value;
-      if (!code) return;
+    function renderConversation() {
+      if (!activeCode) {
+        conversationBody.innerHTML = '<div class="empty-state">Select a class conversation to open the messages.</div>';
+        composerForm.classList.remove('visible');
+        return;
+      }
 
+      const classItem = getClasses().find(item => item.code === activeCode);
       const chats = getChats();
-      const messages = chats[code] || [];
+      const messages = chats[activeCode] || [];
+      const className = classItem ? classItem.name : 'Class';
 
-      chatList.innerHTML = messages.length
-        ? messages.map(message => `
-            <div class="chat-message ${message.sender === 'teacher' ? 'teacher' : 'student'}">
-              ${message.text}
-              <small>${message.sender === 'teacher' ? 'Teacher' : 'Student'} • ${message.time}</small>
-            </div>
-          `).join('')
-        : '<div class="empty">No messages in this class yet.</div>';
+      activeName.textContent = className;
+      activeAvatar.textContent = getInitials(className);
+      composerForm.classList.add('visible');
 
-      chatList.scrollTop = chatList.scrollHeight;
+      if (!messages.length) {
+        conversationBody.innerHTML = '<div class="empty-state">No messages in this class yet.</div>';
+        return;
+      }
+
+      conversationBody.innerHTML = messages.map(message => `
+        <div class="message-row ${message.sender === 'teacher' ? 'outgoing' : ''}">
+          <div class="bubble ${message.sender === 'teacher' ? 'outgoing' : 'incoming'}">
+            ${message.text}
+            <small>${message.sender === 'teacher' ? 'Teacher' : 'Student'} • ${message.time}</small>
+          </div>
+        </div>
+      `).join('');
+
+      conversationBody.scrollTop = conversationBody.scrollHeight;
     }
 
-    classSelect.addEventListener('change', renderMessages);
-
-    chatForm.addEventListener('submit', function (event) {
+    composerForm.addEventListener('submit', function (event) {
       event.preventDefault();
-      const code = classSelect.value;
-      const text = chatInput.value.trim();
+      if (!activeCode) return;
 
-      if (!code || !text) return;
+      const text = messageInput.value.trim();
+      if (!text) return;
 
       const chats = getChats();
-      const messages = chats[code] || [];
+      const messages = chats[activeCode] || [];
       messages.push({
         sender: 'teacher',
         text,
         time: new Date().toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' })
       });
 
-      chats[code] = messages;
+      chats[activeCode] = messages;
       saveChats(chats);
-      chatInput.value = '';
-      renderMessages();
+      messageInput.value = '';
+      renderContacts();
     });
 
-    teacherBurgerBtn.addEventListener('click', function () {
-      teacherSidebar.classList.add('open');
+    window.addEventListener('storage', function (event) {
+      if (event.key === CHAT_KEY || event.key === STORAGE_KEY) {
+        renderContacts();
+      }
     });
 
-    teacherBackBtn.addEventListener('click', function () {
-      teacherSidebar.classList.remove('open');
-    });
-
-    renderOptions();
+    renderContacts();
   </script>
 </body>
 </html>

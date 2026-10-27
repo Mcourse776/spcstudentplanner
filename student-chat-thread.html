@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Class Chat</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: Arial, sans-serif; }
+
+    body {
+      min-height: 100vh;
+      background: #eef2f3;
+      color: #111827;
+    }
+
+    .chat-shell {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      background: #eef2f3;
+    }
+
+    .topbar {
+      background: linear-gradient(180deg, #0b7948 0%, #085f3a 100%);
+      color: #fff;
+      height: 76px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 24px;
+      box-shadow: 0 4px 12px rgba(11, 121, 72, 0.15);
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-weight: 700;
+      font-size: 1.08rem;
+    }
+
+    .brand-mark {
+      width: 18px;
+      height: 18px;
+      border-radius: 4px;
+      display: inline-block;
+      background: rgba(255,255,255,0.25);
+      box-shadow: inset 0 0 0 2px rgba(255,255,255,0.4);
+    }
+
+    .back-link {
+      color: #fff;
+      text-decoration: none;
+      font-weight: 700;
+      background: rgba(255,255,255,0.12);
+      border-radius: 999px;
+      padding: 10px 18px;
+    }
+
+    .conversation {
+      flex: 1;
+      width: min(100%, 1200px);
+      margin: 22px auto 0;
+      background: #f5f5f5;
+      border: 1px solid #e5e7eb;
+      display: flex;
+      flex-direction: column;
+      min-height: 620px;
+    }
+
+    .chat-header {
+      min-height: 90px;
+      display: flex;
+      align-items: center;
+      padding: 18px 28px;
+      border-bottom: 1px solid #dfe3ea;
+      background: rgba(255,255,255,0.25);
+    }
+
+    .profile-block {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .avatar {
+      width: 52px;
+      height: 52px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #7a6af7, #5d7cfe);
+      color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.1rem;
+      font-weight: 700;
+      flex-shrink: 0;
+    }
+
+    .name-wrap {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .name-wrap h2 {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: #111827;
+    }
+
+    .online {
+      color: #16a34a;
+      font-size: 0.85rem;
+      font-weight: 700;
+    }
+
+    .conversation-body {
+      flex: 1;
+      padding: 24px 26px;
+      overflow-y: auto;
+      background: #f1f3f5;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    .message-row {
+      display: flex;
+      width: 100%;
+    }
+
+    .message-row.outgoing {
+      justify-content: flex-end;
+    }
+
+    .bubble {
+      max-width: 70%;
+      padding: 14px 16px;
+      border-radius: 18px;
+      font-size: 0.98rem;
+      line-height: 1.5;
+      word-wrap: break-word;
+      box-shadow: 0 1px 0 rgba(0,0,0,0.02);
+    }
+
+    .bubble.incoming {
+      background: #e9ecf5;
+      color: #111827;
+    }
+
+    .bubble.outgoing {
+      background: #dfeafc;
+      color: #111827;
+    }
+
+    .bubble small {
+      display: block;
+      margin-top: 8px;
+      color: #6b7280;
+      font-size: 0.72rem;
+    }
+
+    .empty-state {
+      color: #6b7280;
+      font-style: italic;
+      padding: 20px 10px;
+      text-align: center;
+    }
+
+    .composer {
+      padding: 18px 20px 22px;
+      background: #f6f6f6;
+      border-top: 1px solid #dfe3ea;
+    }
+
+    .composer-row {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      border: 1px solid #dfe3ea;
+      border-radius: 999px;
+      background: #fff;
+      padding: 0 12px 0 18px;
+    }
+
+    .composer-row input {
+      flex: 1;
+      border: none;
+      outline: none;
+      background: transparent;
+      font-size: 1rem;
+      color: #111827;
+      padding: 16px 0;
+    }
+
+    .send-btn {
+      border: none;
+      background: #0b7948;
+      color: #fff;
+      border-radius: 999px;
+      padding: 12px 20px;
+      font-size: 0.95rem;
+      font-weight: 700;
+      cursor: pointer;
+      min-width: 100px;
+    }
+  </style>
+</head>
+<body>
+  <div class="chat-shell">
+    <header class="topbar">
+      <div class="brand">
+        <span class="brand-mark"></span>
+        Chat Thread
+      </div>
+      <a class="back-link" href="student-chat.html">Back</a>
+    </header>
+
+    <main class="conversation">
+      <header class="chat-header">
+        <div class="profile-block">
+          <div class="avatar" id="chatAvatar">C</div>
+          <div class="name-wrap">
+            <h2 id="chatName">Class</h2>
+            <div class="online">Active now</div>
+          </div>
+        </div>
+      </header>
+
+      <div class="conversation-body" id="conversationBody"></div>
+
+      <div class="composer">
+        <form class="composer-row" id="chatForm">
+          <input type="text" id="messageInput" placeholder="Type a message" maxlength="200" required />
+          <button class="send-btn" type="submit">Send</button>
+        </form>
+      </div>
+    </main>
+  </div>
+
+  <script>
+    if (!sessionStorage.getItem('authUser') || sessionStorage.getItem('authRole') !== 'student') {
+      window.location.href = 'index.html';
+      throw new Error('Unauthorized access. Please log in first.');
+    }
+
+    const JOINED_KEY = 'student_joined_classes';
+    const CHAT_KEY = 'class_chat_messages';
+    const params = new URLSearchParams(window.location.search);
+    const requestedName = params.get('name') || 'Class';
+    const requestedCode = params.get('code') || '';
+
+    const chatName = document.getElementById('chatName');
+    const chatAvatar = document.getElementById('chatAvatar');
+    const conversationBody = document.getElementById('conversationBody');
+    const chatForm = document.getElementById('chatForm');
+    const messageInput = document.getElementById('messageInput');
+
+    function getJoinedClasses() {
+      try {
+        return JSON.parse(localStorage.getItem(JOINED_KEY)) || [];
+      } catch {
+        return [];
+      }
+    }
+
+    function getChatMessages() {
+      try {
+        return JSON.parse(localStorage.getItem(CHAT_KEY)) || {};
+      } catch {
+        return {};
+      }
+    }
+
+    function saveChatMessages(messages) {
+      localStorage.setItem(CHAT_KEY, JSON.stringify(messages));
+    }
+
+    function getInitials(name) {
+      return (name || 'C')
+        .split(' ')
+        .map(part => part[0])
+        .join('')
+        .slice(0, 2)
+        .toUpperCase();
+    }
+
+    function renderConversation() {
+      const joinedClasses = getJoinedClasses();
+      const classInfo = joinedClasses.find(item => item.code === requestedCode) || { name: requestedName, code: requestedCode };
+
+      if (!requestedCode || !joinedClasses.some(item => item.code === requestedCode)) {
+        window.location.href = 'student-chat.html';
+        return;
+      }
+
+      chatName.textContent = classInfo.name;
+      chatAvatar.textContent = getInitials(classInfo.name);
+
+      const chats = getChatMessages();
+      const messages = chats[requestedCode] || [];
+
+      if (!messages.length) {
+        conversationBody.innerHTML = '<div class="empty-state">No messages yet. Start the conversation with your teacher.</div>';
+        return;
+      }
+
+      conversationBody.innerHTML = messages.map(message => `
+        <div class="message-row ${message.sender === 'student' ? 'outgoing' : ''}">
+          <div class="bubble ${message.sender === 'student' ? 'outgoing' : 'incoming'}">
+            ${message.text}
+            <small>${message.sender === 'student' ? 'You' : 'Teacher'} • ${message.time}</small>
+          </div>
+        </div>
+      `).join('');
+
+      conversationBody.scrollTop = conversationBody.scrollHeight;
+    }
+
+    chatForm.addEventListener('submit', function (event) {
+      event.preventDefault();
+      const text = messageInput.value.trim();
+      if (!text || !requestedCode) return;
+
+      const chats = getChatMessages();
+      const messages = chats[requestedCode] || [];
+      messages.push({
+        sender: 'student',
+        text,
+        time: new Date().toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' })
+      });
+
+      chats[requestedCode] = messages;
+      saveChatMessages(chats);
+      messageInput.value = '';
+      renderConversation();
+    });
+
+    window.addEventListener('storage', function (event) {
+      if (event.key === CHAT_KEY || event.key === JOINED_KEY) {
+        renderConversation();
+      }
+    });
+
+    renderConversation();
+  </script>
+</body>
+</html>
