@@ -148,6 +148,14 @@
       gap: 14px;
     }
 
+    .topbar-logo {
+      width: 54px;
+      height: 54px;
+      object-fit: contain;
+      display: block;
+      filter: drop-shadow(0 3px 10px rgba(5, 64, 38, 0.12));
+    }
+
     .burger-btn {
       width: 28px;
       height: 28px;
@@ -544,6 +552,7 @@
           <button class="burger-btn" id="burgerBtn" type="button" aria-label="Toggle menu">
             <span></span>
           </button>
+          <img src="logo.png" alt="Logo" class="topbar-logo">
         </div>
         <div class="topbar-actions">
           <a class="logout-btn" href="index.html">Log Out</a>
@@ -609,7 +618,7 @@
   </div>
 
   <script>
-    const burgerBtn = document.getElementById('burgerBtn');
+    const BrgerBtn = document.getElementById('burgerBtn');
     const backBtn = document.getElementById('backBtn');
     const sidebar = document.getElementById('sidebar');
     const calendarGrid = document.getElementById('calendarGrid');

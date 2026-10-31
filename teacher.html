@@ -37,6 +37,14 @@
       gap: 14px;
     }
 
+    .topbar-logo {
+      width: 54px;
+      height: 54px;
+      object-fit: contain;
+      display: block;
+      filter: drop-shadow(0 3px 10px rgba(5, 64, 38, 0.12));
+    }
+
     .burger-btn {
       width: 42px;
       height: 42px;
@@ -429,6 +437,7 @@
         <button class="burger-btn" id="teacherBurgerBtn" aria-label="Toggle sidebar">
           <span></span>
         </button>
+        <img src="logo.png" alt="Logo" class="topbar-logo">
         <div class="brand">Teacher Dashboard</div>
       </div>
       <a class="logout-btn" href="index.html" id="teacherLogoutBtn">Log Out</a>

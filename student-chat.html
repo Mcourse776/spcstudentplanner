@@ -103,7 +103,8 @@
     .sidebar-link {
       display: flex;
       align-items: center;
-      justify-content: center;
+      justify-content: flex-start;
+      gap: 12px;
       color: #fff;
       background: rgba(255,255,255,0.06);
       border: 1px solid rgba(255,255,255,0.08);
@@ -111,13 +112,22 @@
       padding: 12px 14px;
       font-weight: 600;
       font-size: 1rem;
-      text-align: center;
+      text-align: left;
     }
 
     .sidebar-link.active {
-      background: rgba(255,255,255,0.12);
-      border-color: rgba(255,255,255,0.18);
+      background: rgba(255,255,255,0.18);
+      border-color: rgba(255,255,255,0.3);
       color: #fff;
+      box-shadow: 0 0 0 1px rgba(255,255,255,0.08), 0 0 18px rgba(255,255,255,0.18);
+    }
+
+    .nav-icon {
+      width: 22px;
+      text-align: center;
+      font-size: 1.1rem;
+      display: inline-block;
+      line-height: 1;
     }
 
     .main-panel {
@@ -143,6 +153,14 @@
       display: flex;
       align-items: center;
       gap: 14px;
+    }
+
+    .topbar-logo {
+      width: 54px;
+      height: 54px;
+      object-fit: contain;
+      display: block;
+      filter: drop-shadow(0 3px 10px rgba(5, 64, 38, 0.12));
     }
 
     .burger-btn {
@@ -349,9 +367,9 @@
       </div>
 
       <div class="sidebar-menu">
-        <a class="sidebar-link active" href="#" id="homeNav"><span class="nav-icon">⌂</span>Home</a>
+        <a class="sidebar-link" href="student.html" id="homeNav"><span class="nav-icon">⌂</span>Home</a>
         <a class="sidebar-link" href="calendar.html"><span class="nav-icon">🗓</span>Calendar</a>
-        <a class="sidebar-link" href="student-chat.html" id="chatNav"><span class="nav-icon">⇪</span>Chats</a>
+        <a class="sidebar-link active" href="student-chat.html" id="chatNav"><span class="nav-icon">⇪</span>Chats</a>
         <a class="sidebar-link" href="#"><span class="nav-icon">⚙</span>Settings</a>
       </div>
     </aside>
@@ -362,6 +380,7 @@
           <button class="burger-btn" id="studentBurgerBtn" aria-label="Toggle sidebar">
             <span></span>
           </button>
+          <img src="logo.png" alt="Logo" class="topbar-logo">
           <div class="topbar-title">
           </div>
         </div>
@@ -393,6 +412,13 @@
     const studentBackBtn = document.getElementById('studentBackBtn');
     const chatLogoutBtn = document.getElementById('chatLogoutBtn');
     const contactList = document.getElementById('contactList');
+
+    document.querySelectorAll('.sidebar-link').forEach(link => {
+      link.addEventListener('click', () => {
+        document.querySelectorAll('.sidebar-link').forEach(item => item.classList.remove('active'));
+        link.classList.add('active');
+      });
+    });
 
     function getJoinedClasses() {
       try {

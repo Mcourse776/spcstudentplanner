@@ -148,6 +148,14 @@
       gap: 14px;
     }
 
+    .topbar-logo {
+      width: 54px;
+      height: 54px;
+      object-fit: contain;
+      display: block;
+      filter: drop-shadow(0 3px 10px rgba(5, 64, 38, 0.12));
+    }
+
     .burger-btn {
       width: 28px;
       height: 28px;
@@ -512,34 +520,33 @@
 </head>
 <body>
   <div class="dashboard">
-    <aside class="sidebar" id="sidebar">
+    <aside class="sidebar" id="teacherSidebar">
       <div class="sidebar-top">
         <div></div>
-        <button class="back-btn" id="backBtn" type="button" aria-label="Close sidebar">←</button>
+        <button class="back-btn" id="teacherBackBtn" aria-label="Close sidebar">←</button>
       </div>
 
       <div class="profile">
-        <div class="avatar">S</div>
+        <div class="avatar">T</div>
         <div class="profile-text">
-          <h2>Student 1</h2>
-          <p>student1</p>
+          <h2>Teacher 1</h2>
+          <p>teacher1</p>
         </div>
       </div>
 
       <div class="sidebar-menu">
-        <a class="sidebar-link" href="student.html"><span class="nav-icon">⌂</span>Home</a>
-        <a class="sidebar-link" href="calendar.html"><span class="nav-icon">🗓</span>Calendar</a>
-        <a class="sidebar-link active" href="chat.html"><span class="nav-icon">⇪</span>Chats</a>
-        <a class="sidebar-link" href="#"><span class="nav-icon">⚙</span>Settings</a>
+        <a class="sidebar-link" href="#classList">Classes</a>
+        <a class="sidebar-link" href="chat.html">Chat</a>
       </div>
     </aside>
 
     <main class="main-panel">
       <header class="topbar">
         <div class="left-controls">
-          <button class="burger-btn" id="burgerBtn" type="button" aria-label="Toggle menu">
+          <button class="burger-btn" id="teacherBurgerBtn" aria-label="Toggle sidebar">
             <span></span>
           </button>
+          <img src="logo.png" alt="Logo" class="topbar-logo">
         </div>
         <div class="topbar-actions">
           <a class="logout-btn" href="index.html">Log Out</a>

@@ -150,6 +150,14 @@
       gap: 14px;
     }
 
+    .topbar-logo {
+      width: 54px;
+      height: 54px;
+      object-fit: contain;
+      display: block;
+      filter: drop-shadow(0 3px 10px rgba(5, 64, 38, 0.12));
+    }
+
     .burger-btn {
       width: 28px;
       height: 28px;
@@ -908,7 +916,7 @@
       </div>
 
       <div class="sidebar-menu">
-        <a class="sidebar-link active" href="#" id="homeNav"><span class="nav-icon">⌂</span>Home</a>
+        <a class="sidebar-link active" href="student.html" id="homeNav"><span class="nav-icon">⌂</span>Home</a>
         <a class="sidebar-link" href="calendar.html"><span class="nav-icon">🗓</span>Calendar</a>
         <a class="sidebar-link" href="student-chat.html" id="chatNav"><span class="nav-icon">⇪</span>Chats</a>
         <a class="sidebar-link" href="#"><span class="nav-icon">⚙</span>Settings</a>
@@ -921,6 +929,7 @@
           <button class="burger-btn" id="burgerBtn" type="button" aria-label="Toggle menu">
             <span></span>
           </button>
+          <img src="logo.png" alt="Logo" class="topbar-logo">
         </div>
         <div class="topbar-actions">
           <a class="logout-btn" href="index.html" id="studentLogoutBtn">Log Out</a>
